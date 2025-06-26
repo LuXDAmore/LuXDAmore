@@ -1,6 +1,38 @@
 ### Hi there 👋
 
-Me, myself and I
+💼 I'm a Senior front-end developer (15+ years), specialized in Vue/Nuxt websites/applications.
+I'm also a Vue/Nuxt community contributor (modules and plugins).
+I've also been a speaker at the VueJs Day in Italy.
+
+⚡ In 2018, I graduated and certified by Google (and Udacity) as "Google Mobile and Web Specialist", coming as one in the top 1000 developers (selected from over 200,000 candidates from all over the world).
+
+🔭 I have
+9+ years in frontend development (with Vue), 6+ year (with Nuxt);
+15 Years with Javascript (NodeJs);
+4 Years of Typescript;
+8+ Years with PHP: Laravel or WordPress;
+Ability to solve problems without reliance on code generation or AI-assisted development tools;
+English level: intermediate-high;
+Experience with Socket.io;
+Ability to work with Node.js;
+Vitest, Cypress, Playwright;
+Pinia, Vuex;
+Css, Sass, Less;
+Storybook, design systems, TailwindCss;
+Git;
+Familiarity with Nuxt server routes / Nitro and with NodeJs servers;
+I know hot to deal with a Memory leak;
+Familiarity with CI/CD pipelines and modern DevOps practices (bitbucket and azure devops);
+React (3+ Year);
+Angular (5+ Years).
+
+---
+
+### :wave: More
+
+- 🌎 I work remotely from Italy
+- 📄 Here's [my résumé](https://curriculumvitae.lucaiaconelli.it)
+- 🌐 Check out my [personal instagram](https://instagram.com/luxdamore)
 
 <!--
     **LuXDAmore/LuXDAmore** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
@@ -15,16 +47,6 @@ Me, myself and I
     - 📫 How to reach me: ...
     - 😄 Pronouns: ...
     - ⚡ Fun fact: ...
-
-### :wave: Hey there
-
-- 💼 I work at [Stripe](https://stripe.com/) on the Connect UX Platform Team
-- 🌎 I work remotely from Woodstock, ON, Canada
-- 🦊 I previously worked at [GitLab](https://about.gitlab.com/), on the [Release team](https://about.gitlab.com/handbook/engineering/development/ops/release/)
-- 🕹 Check out my [recent side project](https://inspiral.nathanfriend.io/)
-- 📄 Here's [my résumé](https://resume.nathanfriend.io/)
-- 🌐 Check out my [personal website](https://nathanfriend.io/), my [GitLab profile](https://gitlab.com/nfriend), and my [Stripe GitHub profile](https://github.com/nfriend-stripe)
-
 
 -->
 
