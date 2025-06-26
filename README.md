@@ -31,6 +31,8 @@ Angular (5+ Years).
 ### :wave: More
 
 - 🌎 I work remotely from Italy
+- 🗺️ I've lived on 30+ islands
+- 🎒 Backpack travel for 5+ years
 - 📄 Here's [my résumé](https://curriculumvitae.lucaiaconelli.it)
 - 🌐 Check out my [personal instagram](https://instagram.com/luxdamore)
 
