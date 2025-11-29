@@ -2,7 +2,7 @@
 
 💼 I'm a Senior front-end developer (15+ years), specialized in Vue/Nuxt websites/applications.
 I'm also a Vue/Nuxt community contributor (modules and plugins).
-I've also been a speaker at the VueJs Day in Italy.
+I've also been a speaker at the [International VueJs Day in Italy 📽️](https://www.youtube.com/watch?v=4-HyGHAIOcY).
 
 ⚡ In 2018, I graduated and certified by Google (and Udacity) as "Google Mobile and Web Specialist", coming as one in the top 1000 developers (selected from over 200,000 candidates from all over the world).
 
@@ -30,11 +30,11 @@ I've also been a speaker at the VueJs Day in Italy.
 
 ### :wave: More
 
-- 🌎 I work remotely from Italy
-- 🗺️ I've lived on 30+ islands
+- 🌎 I work remotely, but always very close to the seaside
+- 🗺️ I've lived on 35+ islands
 - 🎒 Backpack travel for 5+ years
-- 📄 Here's [my résumé](https://curriculumvitae.lucaiaconelli.it)
-- 🌐 Check out my [personal instagram](https://instagram.com/luxdamore)
+- 📄 Here's my -not updated- [résumé](https://curriculumvitae.lucaiaconelli.it)
+- 🌐 Check out my nature photography passion on my [personal instagram](https://instagram.com/luxdamore)
 
 <!--
     **LuXDAmore/LuXDAmore** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
