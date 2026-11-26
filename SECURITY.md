@@ -2,11 +2,11 @@
 
 ## Supported Versions
 
-This repository hosts a personal static website (`https://lucaiaconelli.it`) and the GitHub profile README. Only the current `master` branch, the one that is published, is supported.
+This repository hosts a personal static website (`https://lucaiaconelli.it`) and the GitHub profile README. Only the current `main` branch, the one that is published, is supported.
 
 | Version / branch | Supported |
 | --- | --- |
-| `master` (published site) | Yes |
+| `main` (published site) | Yes |
 | Other branches | No |
 
 ## Reporting a Vulnerability

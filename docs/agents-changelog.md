@@ -1,5 +1,13 @@
 # Agents Changelog
 
+## 2026-11-26 — Ramo di produzione `main` al posto di `master` (spec 002)
+
+- **Perché:** dopo il merge della spec 001 l'Operatore vuole usare `main` come ramo principale; `master` verrà eliminato.
+- **Cosa cambia:** creato e pubblicato `main` da `master` più `develop` (merge `--no-ff`, stesso contenuto di `develop`, `README.md` identico); trigger di `ci.yml`, `security.yml` e `pages.yml` e protezione dichiarata in `.github/settings.yml` passano da `master` a `main`; regole e documenti correnti nominano `main`. Le voci storiche e la spec 001 restano com'erano.
+- **Verifica:** `git grep -w master` trova solo le menzioni storiche, la voce del TODO che chiede di eliminare il ramo e il file nesting di `.vscode/settings.json`; `actionlint` gira sulla PR. Letto via API: Pages è già attiva e l'ambiente `github-pages` ammette solo `master`.
+- **Documentazione:** `CLAUDE.md`, `SECURITY.md`, `docs/01-ambienti-e-deploy.md`, `docs/04-review-e-pr.md`, `docs/TODO.md`, `docs/agents/issue-tracker.md`, `.claude/commands/wf-new-feature.md`.
+- **Resta:** Operatore: `main` come ramo di default, `main` tra i rami ammessi dall'ambiente `github-pages` prima del merge su `main`, eliminazione di `master` (`docs/TODO.md` §Azioni Operatore).
+
 ## 2026-11-26 — Repo allineato al portfolio: base Nuxt statica e metodo WeGree senza dominio (spec 001)
 
 - **Perché:** il repo `LuXDAmore/LuXDAmore` era solo il README del profilo GitHub. L'Operatore vuole che diventi anche il progetto del portfolio `lucaiaconelli.it` (soglia developer / fotografo) e ci ha copiato da WeGree best practice Nuxt, configurazioni, agenti, skill, SpecDD e impostazione dei documenti. Si tiene il metodo e si toglie tutto il dominio WeGree (aste, pagamenti, servizi cloud e vetrine esterne, back office). Visione e decisioni del brainstorming del 24–26 novembre in `docs/00-visione-progetto.md` e `docs/discovery/`.

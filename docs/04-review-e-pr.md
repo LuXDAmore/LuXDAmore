@@ -1,16 +1,16 @@
 # 04 — Rami, PR e review
 
-> Come una modifica arriva su `develop` e poi su `master`. Le regole brevi sono in `CLAUDE.md` §Branch e PR; qui il dettaglio.
+> Come una modifica arriva su `develop` e poi su `main`. Le regole brevi sono in `CLAUDE.md` §Branch e PR; qui il dettaglio.
 
 ## Rami
 
 | Ramo | Ruolo |
 |---|---|
-| `master` | Produzione e ramo di default. Da qui si genera il sito caricato su `lucaiaconelli.it` e si pubblica il redirect di Pages. Mai push diretto |
+| `main` | Produzione e ramo di default. Da qui si genera il sito caricato su `lucaiaconelli.it` e si pubblica il redirect di Pages. Mai push diretto |
 | `develop` | Integrazione. Riceve le PR di lavoro; push diretti solo su richiesta esplicita dell'Operatore |
 | `feature/claude/<nome>`, `fix/claude/<nome>` | Rami di lavoro degli agenti, in kebab-case, legati a una spec |
 
-`develop` → `master` si apre e si mergia solo col via esplicito dell'Operatore.
+`develop` → `main` si apre e si mergia solo col via esplicito dell'Operatore.
 
 ## Il flusso di una PR
 
@@ -55,4 +55,4 @@ Un rilievo (di un bot, di un agente o di un audit) è lavoro da fare ora solo se
 
   GitHub segna da solo la PR come mergiata.
 - Dopo il merge si leggono comunque i commenti dei bot arrivati sulla PR.
-- Il rilascio `develop` → `master` segue lo stesso schema, con la sua PR e il suo via. Dopo il merge su `master` l'Operatore genera e carica il sito ([`01-ambienti-e-deploy.md`](./01-ambienti-e-deploy.md)).
+- Il rilascio `develop` → `main` segue lo stesso schema, con la sua PR e il suo via. Dopo il merge su `main` l'Operatore genera e carica il sito ([`01-ambienti-e-deploy.md`](./01-ambienti-e-deploy.md)).
