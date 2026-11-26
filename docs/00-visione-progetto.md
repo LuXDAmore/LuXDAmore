@@ -98,3 +98,4 @@ Il connettore Adobe (claude.ai) cerca nel catalogo Lightroom **per contenuto** (
 - Dove vivono le immagini ottimizzate (repo, storage esterno, CDN) e quanto pesano.
 - Quali album Lightroom diventano le prime mostre (servono link web condivisi).
 - Bilingue IT/EN: probabile (il CV lo è già), da decidere con la spec dei contenuti.
+- Protezione di `main` in `.github/settings.yml`: tenere l'approvazione obbligatoria anche per l'amministratore, toglierla o eliminare il file (oggi è inerte: serve l'app Probot Settings).
