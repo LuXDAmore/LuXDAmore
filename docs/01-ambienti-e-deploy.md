@@ -61,7 +61,6 @@ Workflow in `.github/workflows/` (azioni fissate per SHA, con il tag nel comment
 Altri file del repo in `.github/`:
 
 - `dependabot.yml` — npm mensile con limite di PR a 0 (niente PR di aggiornamento versione; gli aggiornamenti li propone Renovate, `renovate.json`), esclusi `docs/**` e `skills/**`.
-- `settings.yml` — specchio dichiarativo della protezione di `main` (check richiesti, una approvazione); è inerte finché sul repo non è installata l'app Probot Settings.
 - `FUNDING.yml` — i link di sponsorizzazione del profilo `luxdamore` mostrati da GitHub.
 
 ## Immagini solo in locale
