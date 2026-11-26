@@ -12,7 +12,7 @@
 > Cose che **solo l'Operatore** può fare, perché richiedono credenziali o console esterne.
 
 - [x] 🔴 **`main` ramo di default** (spec 002), con lo stesso `README.md` del profilo.
-- [ ] 🟡 **Eliminare `master`** (è contenuto per intero in `main`) e toglierlo dai rami ammessi dall'ambiente `github-pages` (Settings → Environments); poi controllare che Pages risulti ancora attiva.
+- [x] 🟡 **`master` eliminato** e tolto dai rami ammessi dall'ambiente `github-pages`; Pages resta attiva.
 - [x] 🔴 **`main` tra i rami ammessi dall'ambiente `github-pages`**, Pages con sorgente GitHub Actions: il redirect si pubblica da `main` (`docs/01-ambienti-e-deploy.md`).
 - [ ] 🟡 **Decidere `.github/settings.yml`**: oggi chiede una approvazione obbligatoria anche per l'amministratore (`enforce_admins`). È inerte finché sul repo non c'è l'app Probot Settings; se la si installa, con un solo manutentore blocca i merge (domanda aperta in `docs/00-visione-progetto.md`).
 - [ ] 🟡 **Caricare via FTP la homepage generata** (`pnpm generate`, contenuto di `.output/public` nella radice di `lucaiaconelli.it`) da `main`, che contiene già la spec 001.

@@ -1,5 +1,13 @@
 # Agents Changelog
 
+## 2026-11-26 — `master` eliminato: spec 002 completa
+
+- **Perché:** ultimo passo della spec 002, fatto dall'Operatore.
+- **Cosa cambia:** spuntati T6 della spec 002 e la voce del TODO. Su GitHub restano i rami `main` (default) e `develop`.
+- **Verifica:** letto via API: rami remoti `develop` e `main`, ramo di default `main`, Pages attiva con sorgente GitHub Actions, ambiente `github-pages` che ammette solo `main`.
+- **Documentazione:** `.specdd/002-main-branch/tasks.md`, `docs/TODO.md`.
+- **Resta:** Operatore: decidere `.github/settings.yml` e il primo caricamento FTP da `main`.
+
 ## 2026-11-26 — Chiusura della spec 002: `main` in produzione
 
 - **Perché:** PR #5 mergiata col via dell'Operatore; restava da allineare spec e TODO allo stato reale.
