@@ -11,8 +11,9 @@
 
 > Cose che **solo l'Operatore** può fare, perché richiedono credenziali o console esterne.
 
-- [ ] 🔴 **Attivare GitHub Pages (Source = GitHub Actions) prima del primo merge su `master`** (Settings → Pages): senza, il primo giro di `pages.yml` fallisce a `configure-pages`; se succede, rilanciarlo con `workflow_dispatch` dopo l'attivazione (`docs/01-ambienti-e-deploy.md`).
-- [ ] 🟡 **Caricare via FTP la homepage generata** (`pnpm generate`, contenuto di `.output/public` nella radice di `lucaiaconelli.it`) dopo il merge della spec 001 su `master`.
+- [ ] 🔴 **Impostare `main` come ramo di default ed eliminare `master`** (Settings → General → Default branch; spec 002). `main` esiste già con tutto il lavoro della spec 001 e lo stesso `README.md`: il cambio si può fare subito. Dopo l'eliminazione, controllare che Pages risulti ancora attiva.
+- [ ] 🔴 **Aggiungere `main` ai rami ammessi dall'ambiente `github-pages`, prima del merge della spec 002 su `main`** (Settings → Environments → `github-pages` → Deployment branches and tags; oggi ammette solo `master`). Pages è già attiva; senza questo passo il primo giro di `pages.yml` su `main` viene rifiutato. Se succede, rilanciarlo con `workflow_dispatch` dopo la correzione (`docs/01-ambienti-e-deploy.md`).
+- [ ] 🟡 **Caricare via FTP la homepage generata** (`pnpm generate`, contenuto di `.output/public` nella radice di `lucaiaconelli.it`) da `main`, che contiene già la spec 001.
 - [ ] 🟡 **Scegliere gli album Lightroom delle prime mostre** e condividerli via link web (domanda aperta in `docs/00-visione-progetto.md`).
 
 ## Fase 1 — Base del repo (spec 001)
