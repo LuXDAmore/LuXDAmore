@@ -1,0 +1,66 @@
+Spec: Portfolio lucaiaconelli.it
+Platform: TypeScript/Nuxt 4/static generation
+
+Purpose:
+  Definire il contratto SpecDD di primo livello del portfolio personale di Luca Iaconelli (developer e fotografo).
+  Tenere il lavoro dentro spec vicine al codice, la visione in docs/00-visione-progetto.md e le convenzioni Nuxt esistenti.
+
+Structure:
+  app: applicazione Nuxt (pagine, layout, componenti, composable, stili del tema).
+  test: test Vitest con @nuxt/test-utils.
+  docs: visione, decisioni, metodo, convenzioni e piano (indice in docs/README.md).
+  public: asset statici copiati così come sono nel sito generato.
+  .github: CI, workflow della GitHub Pages di redirect, template di issue.
+  .specdd: metodo SpecDD, template e spec delle feature (NNN-nome).
+
+Owns:
+  package.json
+  nuxt.config.ts
+  vitest.config.mts
+  app/
+  test/
+  public/
+  docs/
+  .github/
+
+Can read:
+  README.md
+  TODO.md
+  AGENTS.md
+  CLAUDE.md
+  DESIGN.md
+  docs/**
+
+Must:
+  Generare il sito con `pnpm generate` in `.output/public`, caricabile via FTP su un host senza Node.
+  Usare Nuxt, Vue 3, TypeScript strict, Nuxt UI e Tailwind CSS secondo la configurazione esistente; prima gli strumenti del framework, poi il codice a mano.
+  Scrivere pagine con HTML semantico: `lang`, un `<main>`, un solo `<h1>`, title e description via `useSeoMeta`.
+  Pubblicare le foto come vere immagini (`<img>`/`NuxtImg`) con `alt`, dimensioni esplicite e varianti ottimizzate; il WebGL aggiunge atmosfera e movimento, non sostituisce il contenuto.
+  Tenere identificatori, file e cartelle in inglese; commenti, documentazione, spec e copy in italiano.
+  Aggiornare nello stesso cambiamento i .sdd pertinenti, i test, docs/TODO.md e docs/agents-changelog.md quando cambiano comportamento o proprietà dei file.
+
+Must not:
+  Richiedere un runtime server in produzione (API Nitro, rendering on-demand, preset serverless).
+  Versionare segreti, chiavi private, file `.env` o riferimenti a progetti di terzi.
+  Pubblicare coordinate GPS o EXIF di posizione nelle immagini e nei dati: il luogo si riduce a città/paese.
+  Versionare gli export originali o i RAW dell'archivio fotografico.
+  Modificare README.md (README del profilo GitHub) senza una richiesta esplicita dell'Operatore.
+  Aggiungere codice, dipendenze o configurazioni per bisogni non ancora presenti.
+  Eseguire refactor ampi fuori dall'autorità della spec più vicina.
+
+Depends on:
+  Nuxt
+  Vue 3
+  TypeScript
+  Nuxt UI
+  Tailwind CSS
+
+Tasks:
+  [x] Aggiungere il contratto SpecDD di primo livello del portfolio.
+  [ ] Base del repo: homepage vuota generata in statico (spec 001-repo-baseline).
+
+Done when:
+  La catena di spec si risolve a partire da app.sdd prima di modificare il codice.
+  Ogni nuovo lavoro ha una spec locale in .specdd/NNN-nome/ che ne definisce confini e criteri di fine.
+  `pnpm generate` produce un sito statico completo in `.output/public`.
+  Codice, test, spec, docs/TODO.md e docs/agents-changelog.md restano allineati.

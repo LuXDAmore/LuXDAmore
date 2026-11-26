@@ -1,0 +1,4 @@
+# LF al checkout su ogni macchina, anche con core.autocrlf=true (allineato a .editorconfig, end_of_line = lf).
+# Su Windows autocrlf converte in CRLF nel working tree e rompe chi legge i file byte per byte:
+# - gli script workflow letti dall'harness (il permission handler rifiuta i \r: "script contains control characters").
+* text=auto eol=lf
