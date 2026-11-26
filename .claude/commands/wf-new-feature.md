@@ -17,6 +17,6 @@ Workflow:
 8. Verifica in locale: `pnpm lint`, `pnpm typecheck`, `pnpm test` e `pnpm generate` (il sito deve restare generabile in statico).
 9. Aggiorna la documentazione con la skill `docs-update`, nello stesso commit del codice.
 10. Review: `@reviewer`, `@design-system-checker` se tocchi la UI, `@test-writer` se mancano test. Se il diff non è banale, esegui il gate `pre-pr-review`. Poi apri la PR verso `develop` **in bozza**, con descrizione chiara di cosa cambia e come testarlo (`@pr-writer`).
-11. Sulla PR commenta `@codex review`; verifica ogni rilievo contro il codice e le regole del progetto (mai applicarlo alla cieca), correggi quelli veri e ricommenta `@codex review` finché Codex non segnala più problemi (vedi `docs/04-review-e-pr.md`). Non menzionare mai `@copilot` nei commenti.
+11. Se l'Operatore chiede la review di Codex, sulla PR commenta `@codex review`; verifica ogni rilievo contro il codice e le regole del progetto (mai applicarlo alla cieca), correggi quelli veri e ricommenta `@codex review` finché Codex non segnala più problemi (vedi `docs/04-review-e-pr.md`). Non menzionare mai `@copilot` nei commenti.
 
 Vincoli: non mergiare la PR, né in `develop` né in `main`, senza il via esplicito dell'Operatore: a PR completa (check verdi, rilievi verificati e risolti) ci si ferma e si chiede. Commit piccoli e descrittivi, in italiano. Non toccare `README.md` (è il README del profilo GitHub). Aggiorna i documenti in `docs/` se la feature cambia un flusso o una decisione.

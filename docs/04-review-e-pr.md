@@ -20,14 +20,17 @@
 4. **Review degli agenti:** `@reviewer`; `@design-system-checker` se cambia la UI; `@test-writer` se mancano test.
 5. **Gate pre-PR:** workflow `pre-pr-review` ([`03-agenti-e-comandi.md`](./03-agenti-e-comandi.md)). Le modifiche piccole o cosmetiche possono saltarlo.
 6. **PR in bozza** verso `develop`, descrizione da `@pr-writer`, in italiano.
-7. **Giri Codex** (sotto) fino a esito pulito, con la CI verde.
+7. **Giri Codex** (sotto), solo se l'Operatore li chiede, fino a esito pulito; CI verde in ogni caso.
 8. **Stop:** si chiede all'Operatore il via per il merge.
 9. **Merge** col via (sotto), poi controllo dei commenti dei bot arrivati sulla PR.
+
+Modifiche piccole (sola documentazione, spunte di task e TODO): su indicazione dell'Operatore si committano direttamente su `develop`, senza PR né giri Codex, e poi `develop` si unisce in `main` con un merge commit.
 
 Limite: **meno di 300 file modificati per PR**, altrimenti i bot non producono alcuna review. Oltre soglia si spezza in PR impilate (per la spec 001 le skill vendor stanno in una PR separata).
 
 ## Giri `@codex review`
 
+- **Si chiede solo quando lo dice l'Operatore**: ogni giro consuma la quota di Codex, e per le modifiche piccole non serve.
 - Aperta la PR in bozza, si scrive un commento con `@codex review`.
 - I rilievi arrivano come **review comment inline** (`gh api repos/LuXDAmore/LuXDAmore/pulls/<n>/comments`); l'issue comment porta solo il riepilogo. Si leggono tutti gli endpoint filtrando l'autore: l'assenza di commenti non prova l'assenza di rilievi.
 - Ogni rilievo si **verifica** (sotto, triage); quelli veri si correggono con un test o una verifica, quelli falsi si chiudono rispondendo con il motivo.

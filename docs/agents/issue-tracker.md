@@ -58,8 +58,8 @@ rule 7): identifiers in English, prose in Italian.
 **PRs as a request surface: no.** _(Set to `yes` if this repo treats external PRs as feature requests; `/triage` reads this flag.)_
 
 Deliberate, not a default left untouched: every PR here is internal (`main` ← `develop` ←
-`feature/claude/*` / `fix/claude/*`, opened as draft) and reviewed by the `pre-pr-review` gate plus
-the `@codex review` loop. There are no external contributors, so triage would only ever pick up our
+`feature/claude/*` / `fix/claude/*`, opened as draft) and reviewed by the `pre-pr-review` gate plus,
+when the Operator asks for it, the `@codex review` loop. There are no external contributors, so triage would only ever pick up our
 own work in progress. Revisit this if the repo ever takes outside PRs.
 
 When set to `yes`, PRs run through the same labels and states as issues, using the `gh pr` equivalents:

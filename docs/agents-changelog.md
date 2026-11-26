@@ -1,5 +1,13 @@
 # Agents Changelog
 
+## 2026-11-26 — Codex su richiesta, modifiche piccole senza PR
+
+- **Perché:** l'Operatore non vuole consumare la quota di Codex per le cose piccole: la review di Codex si chiede solo quando lo dice lui, e le modifiche piccole vanno direttamente su `develop` e `main` senza PR.
+- **Cosa cambia:** `CLAUDE.md` §Branch e PR, `docs/04-review-e-pr.md` e i comandi `wf-new-feature`, `wf-fix-bug`, `spec-new` dicono che i giri `@codex review` partono solo su richiesta dell'Operatore e che le modifiche piccole, su sua indicazione, si committano direttamente su `develop` e si portano su `main` con un merge commit.
+- **Verifica:** ricerca di `codex review` nei comandi e nei documenti: nessuna istruzione che lo chieda in automatico.
+- **Documentazione:** `CLAUDE.md`, `docs/02-specdd.md`, `docs/04-review-e-pr.md`, `docs/agents/issue-tracker.md`, `.claude/commands/`.
+- **Resta:** il gate `pre-pr-review` lancia ancora la CLI di Codex in locale sui diff non banali.
+
 ## 2026-11-26 — `master` eliminato: spec 002 completa
 
 - **Perché:** ultimo passo della spec 002, fatto dall'Operatore.

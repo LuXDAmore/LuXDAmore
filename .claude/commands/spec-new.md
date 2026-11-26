@@ -13,6 +13,6 @@ Workflow:
 3. Compila `requirements.md`: contesto, obiettivo, user story, requisiti funzionali in formato EARS (QUANDO/SE/IL SISTEMA DEVE), non funzionali, fuori scope, criteri di accettazione. NIENTE soluzioni tecniche qui.
 4. Fermati e presenta i requirements per l'approvazione (l'Operatore conferma il valore) prima di procedere al design.
 5. Dopo l'ok, compila `design.md`: approccio, pagine/componenti/dati toccati, impatto sul sito generato (`pnpm generate`, upload FTP), flusso, edge case (rischio → gestione, con criticità), rischi, skill rilevanti, punti aperti.
-6. Dopo l'ok sul design, genera `tasks.md`: lista ordinata e verificabile, con i test (edge case 🔴 per primi) e la chiusura (doc, agenti, gate pre-PR, PR, giri `@codex review`).
+6. Dopo l'ok sul design, genera `tasks.md`: lista ordinata e verificabile, con i test (edge case 🔴 per primi) e la chiusura (doc, agenti, gate pre-PR, PR, giri `@codex review` se l'Operatore li chiede).
 
 Vincoli: una spec per ogni feature, anche piccola (in tal caso i file sono brevi). Il nome della spec corrisponde al branch (`feature/claude/<nome>`). Non scrivere codice in questa fase: solo la spec.

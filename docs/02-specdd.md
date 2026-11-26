@@ -48,7 +48,7 @@ Si crea con `/spec-new`, che copia `_template/` e numera la cartella.
 5. /wf-new-feature nome     → ramo feature/claude/nome, sviluppo guidato dai task
 6. task eseguiti            → @reviewer, @design-system-checker (UI), @test-writer
 7. @docs-sync               → docs/ allineati se cambiano flussi o decisioni
-8. @pr-writer + gate        → PR in bozza, giri @codex review, via dell'Operatore
+8. @pr-writer + gate        → PR in bozza, giri @codex review se richiesti, via dell'Operatore
 ```
 
 La spec non sostituisce `docs/`: li aggiorna a valle.

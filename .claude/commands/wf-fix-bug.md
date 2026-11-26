@@ -13,6 +13,6 @@ Workflow:
 5. Applica la correzione minima.
 6. Verifica che il test ora passi e che il resto resti verde: `pnpm test`, `pnpm lint`, `pnpm typecheck`, e `pnpm generate` se il fix tocca pagine o build.
 7. Aggiorna la documentazione con la skill `docs-update`, nello stesso commit.
-8. `@reviewer` (più `@design-system-checker` se tocchi la UI). Se il diff non è banale, esegui il gate `pre-pr-review`. Poi apri la PR verso `develop` **in bozza**, spiegando causa e soluzione, con il test che la copre; sulla PR commenta `@codex review` e ripeti dopo ogni correzione finché Codex non segnala più problemi, verificando ogni rilievo prima di applicarlo. Non menzionare mai `@copilot`.
+8. `@reviewer` (più `@design-system-checker` se tocchi la UI). Se il diff non è banale, esegui il gate `pre-pr-review`. Poi apri la PR verso `develop` **in bozza**, spiegando causa e soluzione, con il test che la copre; se l'Operatore chiede la review di Codex, sulla PR commenta `@codex review` e ripeti dopo ogni correzione finché Codex non segnala più problemi, verificando ogni rilievo prima di applicarlo. Non menzionare mai `@copilot`.
 
 Vincoli: ogni bug fix deve lasciare dietro di sé un test che ne previene la regressione. Se il bug nasce da un'assunzione sbagliata documentata, correggi anche il documento in `docs/`. Merge solo col via esplicito dell'Operatore.
