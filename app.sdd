@@ -58,6 +58,7 @@ Depends on:
 Tasks:
   [x] Aggiungere il contratto SpecDD di primo livello del portfolio.
   [x] Base del repo: homepage vuota generata in statico (spec 001-repo-baseline).
+  [x] Ramo di produzione `main` al posto di `master` (spec 002-main-branch).
 
 Done when:
   La catena di spec si risolve a partire da app.sdd prima di modificare il codice.

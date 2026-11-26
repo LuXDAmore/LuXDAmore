@@ -11,8 +11,10 @@
 
 > Cose che **solo l'Operatore** può fare, perché richiedono credenziali o console esterne.
 
-- [ ] 🔴 **Impostare `main` come ramo di default ed eliminare `master`** (Settings → General → Default branch; spec 002). `main` esiste già con tutto il lavoro della spec 001 e lo stesso `README.md`: il cambio si può fare subito. Dopo l'eliminazione, controllare che Pages risulti ancora attiva.
-- [ ] 🔴 **Aggiungere `main` ai rami ammessi dall'ambiente `github-pages`, prima del merge della spec 002 su `main`** (Settings → Environments → `github-pages` → Deployment branches and tags; oggi ammette solo `master`). Pages è già attiva; senza questo passo il primo giro di `pages.yml` su `main` viene rifiutato. Se succede, rilanciarlo con `workflow_dispatch` dopo la correzione (`docs/01-ambienti-e-deploy.md`).
+- [x] 🔴 **`main` ramo di default** (spec 002), con lo stesso `README.md` del profilo.
+- [ ] 🟡 **Eliminare `master`** (è contenuto per intero in `main`) e toglierlo dai rami ammessi dall'ambiente `github-pages` (Settings → Environments); poi controllare che Pages risulti ancora attiva.
+- [x] 🔴 **`main` tra i rami ammessi dall'ambiente `github-pages`**, Pages con sorgente GitHub Actions: il redirect si pubblica da `main` (`docs/01-ambienti-e-deploy.md`).
+- [ ] 🟡 **Decidere `.github/settings.yml`**: oggi chiede una approvazione obbligatoria anche per l'amministratore (`enforce_admins`). È inerte finché sul repo non c'è l'app Probot Settings; se la si installa, con un solo manutentore blocca i merge (domanda aperta in `docs/00-visione-progetto.md`).
 - [ ] 🟡 **Caricare via FTP la homepage generata** (`pnpm generate`, contenuto di `.output/public` nella radice di `lucaiaconelli.it`) da `main`, che contiene già la spec 001.
 - [ ] 🟡 **Scegliere gli album Lightroom delle prime mostre** e condividerli via link web (domanda aperta in `docs/00-visione-progetto.md`).
 
