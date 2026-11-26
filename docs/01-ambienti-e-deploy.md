@@ -33,7 +33,7 @@ pnpm dev       # server di sviluppo
 
 Il caricamento è manuale e lo fa l'Operatore (l'automazione è una spec futura).
 
-1. Su `master` aggiornato: `pnpm install`, poi `pnpm generate`.
+1. Su `main` aggiornato: `pnpm install`, poi `pnpm generate`.
 2. Controllo: `pnpm preview` e una passata della homepage nel browser.
 3. Via FTP (per esempio con FileZilla) si carica **il contenuto** di `.output/public`, non la cartella stessa, nella radice del sito `lucaiaconelli.it`, sovrascrivendo i file esistenti.
 4. Se una rotta sparisce, il suo file va cancellato anche dal server: il caricamento non lo toglie da solo.
@@ -44,9 +44,9 @@ Con una sola pagina statica non servono `.htaccess` né fallback SPA; si rivedon
 
 `https://luxdamore.github.io/LuXDAmore/` non ospita il sito: reindirizza a `https://lucaiaconelli.it`.
 
-- Il workflow `.github/workflows/pages.yml` pubblica **solo** la cartella `.github/pages/` (`index.html` con meta refresh, `<link rel="canonical">` e un link visibile; `404.html` uguale), a ogni push su `master` e a mano (`workflow_dispatch`).
+- Il workflow `.github/workflows/pages.yml` pubblica **solo** la cartella `.github/pages/` (`index.html` con meta refresh, `<link rel="canonical">` e un link visibile; `404.html` uguale), a ogni push su `main` e a mano (`workflow_dispatch`).
 - Il redirect usa URL assoluti, perché la Pages del repo profilo vive sotto `/LuXDAmore/`.
-- **Una tantum, prima del primo merge su `master`**: in GitHub, Settings → Pages → Build and deployment → Source = **GitHub Actions**. Senza questa impostazione il primo giro di `pages.yml` fallisce allo step `configure-pages`. Se è già successo: attivare Pages e rilanciare il workflow a mano (Actions → Pages → Run workflow, cioè `workflow_dispatch`).
+- Pages è attiva con sorgente **GitHub Actions** (Settings → Pages). L'ambiente `github-pages` accetta i deploy solo dai rami elencati in Settings → Environments → `github-pages` → Deployment branches and tags, e l'elenco **deve contenere `main`**: GitHub lo compila con il nome del ramo di default al momento dell'attivazione e non lo aggiorna se il default cambia. Se un deploy viene rifiutato per le regole dell'ambiente: aggiungere il ramo e rilanciare il workflow a mano (Actions → Pages → Run workflow, cioè `workflow_dispatch`).
 
 ## CI
 
@@ -54,14 +54,14 @@ Nessun workflow richiede segreti. Una PR si mergia solo con la CI verde (e col v
 
 Workflow in `.github/workflows/` (azioni fissate per SHA, con il tag nel commento):
 
-- `ci.yml` — sulle PR e sui push su `develop` e `master`, con Node da `.nvmrc` e pnpm da `packageManager`: `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm generate`.
-- `security.yml` — sulle PR, sui push su `master` e ogni lunedì (cron `24 4 * * 1`, UTC): actionlint sui workflow; CodeQL (JavaScript/TypeScript, config in `.github/codeql/codeql-config.yml`) e OpenSSF Scorecard (risultati SARIF caricati in Code scanning, non pubblicati) solo se il repo è pubblico.
+- `ci.yml` — sulle PR e sui push su `develop` e `main`, con Node da `.nvmrc` e pnpm da `packageManager`: `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm generate`.
+- `security.yml` — sulle PR, sui push su `main` e ogni lunedì (cron `24 4 * * 1`, UTC): actionlint sui workflow; CodeQL (JavaScript/TypeScript, config in `.github/codeql/codeql-config.yml`) e OpenSSF Scorecard (risultati SARIF caricati in Code scanning, non pubblicati) solo se il repo è pubblico. Il «default setup» di CodeQL (Settings → Code security) resta spento: se è attivo, GitHub rifiuta l'analisi del workflow e il job CodeQL fallisce su ogni PR.
 - `pages.yml` — il redirect di GitHub Pages descritto sopra.
 
 Altri file del repo in `.github/`:
 
 - `dependabot.yml` — npm mensile con limite di PR a 0 (niente PR di aggiornamento versione; gli aggiornamenti li propone Renovate, `renovate.json`), esclusi `docs/**` e `skills/**`.
-- `settings.yml` — specchio dichiarativo della protezione di `master` (check richiesti, una approvazione); è inerte finché sul repo non è installata l'app Probot Settings.
+- `settings.yml` — specchio dichiarativo della protezione di `main` (check richiesti, una approvazione); è inerte finché sul repo non è installata l'app Probot Settings.
 - `FUNDING.yml` — i link di sponsorizzazione del profilo `luxdamore` mostrati da GitHub.
 
 ## Immagini solo in locale

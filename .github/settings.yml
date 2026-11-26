@@ -1,7 +1,7 @@
 # Declarative branch protection for repositories using the Probot Settings app.
-# Mirrors the required GitHub UI settings for master: required checks + 1 approval.
+# Mirrors the required GitHub UI settings for main: required checks + 1 approval.
 branches:
-  - name: master
+  - name: main
     protection:
       enforce_admins: true
       required_pull_request_reviews:
