@@ -55,7 +55,7 @@ Nessun workflow richiede segreti. Una PR si mergia solo con la CI verde (e col v
 Workflow in `.github/workflows/` (azioni fissate per SHA, con il tag nel commento):
 
 - `ci.yml` — sulle PR e sui push su `develop` e `main`, con Node da `.nvmrc` e pnpm da `packageManager`: `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm generate`.
-- `security.yml` — sulle PR, sui push su `main` e ogni lunedì (cron `24 4 * * 1`, UTC): actionlint sui workflow; CodeQL (JavaScript/TypeScript, config in `.github/codeql/codeql-config.yml`) e OpenSSF Scorecard (risultati SARIF caricati in Code scanning, non pubblicati) solo se il repo è pubblico.
+- `security.yml` — sulle PR, sui push su `main` e ogni lunedì (cron `24 4 * * 1`, UTC): actionlint sui workflow; CodeQL (JavaScript/TypeScript, config in `.github/codeql/codeql-config.yml`) e OpenSSF Scorecard (risultati SARIF caricati in Code scanning, non pubblicati) solo se il repo è pubblico. Il «default setup» di CodeQL (Settings → Code security) resta spento: se è attivo, GitHub rifiuta l'analisi del workflow e il job CodeQL fallisce su ogni PR.
 - `pages.yml` — il redirect di GitHub Pages descritto sopra.
 
 Altri file del repo in `.github/`:

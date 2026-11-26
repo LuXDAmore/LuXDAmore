@@ -4,7 +4,7 @@
 
 - **Perché:** dopo il merge della spec 001 l'Operatore vuole usare `main` come ramo principale; `master` verrà eliminato.
 - **Cosa cambia:** creato e pubblicato `main` da `master` più `develop` (merge `--no-ff`, stesso contenuto di `develop`, `README.md` identico); trigger di `ci.yml`, `security.yml` e `pages.yml` e protezione dichiarata in `.github/settings.yml` passano da `master` a `main`; regole e documenti correnti nominano `main`. Le voci storiche e la spec 001 restano com'erano.
-- **Verifica:** `git grep -w master` trova solo le menzioni storiche, la voce del TODO che chiede di eliminare il ramo e il file nesting di `.vscode/settings.json`; `actionlint` gira sulla PR. Letto via API: Pages è già attiva e l'ambiente `github-pages` ammette solo `master`.
+- **Verifica:** `git grep -w master` trova solo le menzioni storiche, la voce del TODO che chiede di eliminare il ramo e il file nesting di `.vscode/settings.json`; `actionlint` gira sulla PR. Letto via API: Pages è già attiva e l'ambiente `github-pages` ammette solo `master`. Sulla PR il job CodeQL falliva perché sul repo era stato acceso il «default setup» di CodeQL, incompatibile con l'analisi di `security.yml`: spento via API col consenso dell'Operatore, il job è passato; annotato in `docs/01-ambienti-e-deploy.md`.
 - **Documentazione:** `CLAUDE.md`, `SECURITY.md`, `docs/01-ambienti-e-deploy.md`, `docs/04-review-e-pr.md`, `docs/TODO.md`, `docs/agents/issue-tracker.md`, `.claude/commands/wf-new-feature.md`.
 - **Resta:** Operatore: `main` come ramo di default, `main` tra i rami ammessi dall'ambiente `github-pages` prima del merge su `main`, eliminazione di `master` (`docs/TODO.md` §Azioni Operatore).
 
