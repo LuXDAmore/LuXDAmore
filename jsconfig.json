@@ -1,0 +1,12 @@
+{
+    "exclude": [
+        "node_modules",
+        "backup",
+        "docs",
+        "vendor",
+        ".nuxt",
+        "dist",
+        ".dist",
+        ".output"
+    ]
+}

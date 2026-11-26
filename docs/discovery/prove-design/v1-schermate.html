@@ -1,0 +1,371 @@
+<title>Climi lucaiaconelli.it</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&family=Anton&family=Archivo+Black&display=swap">
+<style>
+/* Layout: cinque schermate 16:9 una sotto l'altra, ognuna nel suo clima; la pagina attorno è una sala buia neutra. */
+:root {
+  --bg: #09080c; --fg: #ece8f1; --muted: #9a94a6; --line: #26232d;
+  --acid: #d9e021; --noir: #060608;
+  --serif: "Instrument Serif", Georgia, serif;
+  --sans: "Geist", "Segoe UI", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, Consolas, monospace;
+  --brut: "Archivo Black", "Arial Black", Impact, sans-serif;
+  --cond: "Anton", Impact, "Arial Narrow", sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--sans);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 4rem; }
+.wrap { max-width: 1280px; margin: 0 auto; }
+header.top { padding-block: 3rem 1.5rem; display: grid; gap: .9rem; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 400 clamp(2.4rem, 6vw, 4.4rem)/.95 var(--serif); margin: 0; text-wrap: balance; }
+.lede { max-width: 64ch; color: var(--muted); margin: 0; }
+.lede b { color: var(--fg); font-weight: 500; }
+
+.screen-wrap { margin-top: 3.5rem; display: grid; gap: .9rem; }
+.screen-label { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; align-items: baseline; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 1rem; }
+.screen-label h2 { font: 400 1.9rem/1 var(--serif); margin: 0; }
+.screen-label h2 span { font: 500 12px/1 var(--mono); color: var(--muted); letter-spacing: .12em; margin-right: .6rem; vertical-align: middle; }
+.screen-label p { margin: 0; color: var(--muted); max-width: 70ch; font-size: 14px; }
+.screen { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; overflow: hidden; container-type: inline-size; border: 1px solid var(--line); }
+@media (max-width: 700px) { .screen { aspect-ratio: 3 / 4; } }
+.grain { position: absolute; inset: -50%; pointer-events: none; opacity: .09; mix-blend-mode: overlay; z-index: 6;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite; }
+@keyframes grain { 0%{transform:translate(0,0)} 20%{transform:translate(-3%,2%)} 40%{transform:translate(2%,-3%)} 60%{transform:translate(-2%,-1%)} 80%{transform:translate(3%,3%)} 100%{transform:translate(0,0)} }
+.note { font: 12px/1.5 var(--mono); color: var(--muted); }
+
+/* ---------- 1. SOGLIA ---------- */
+.soglia { display: flex; background: #000; }
+.soglia .half { position: relative; flex: 1 1 50%; transition: flex-grow .9s cubic-bezier(.7,0,.2,1); overflow: hidden; cursor: pointer; }
+.soglia:hover .half:hover { flex-grow: 1.7; }
+.dev { background: #000; color: var(--acid); }
+.dev canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.dev .lbl { position: absolute; left: 3.5cqw; bottom: 3cqw; font: 400 clamp(28px, 7.2cqw, 110px)/.82 var(--brut); text-transform: uppercase; letter-spacing: -.02em; mix-blend-mode: difference; color: var(--acid); }
+.dev .meta { position: absolute; left: 3.5cqw; top: 3cqw; font: 500 clamp(9px, 1cqw, 13px)/1.4 var(--mono); text-transform: uppercase; background: var(--acid); color: #000; padding: .3em .5em; }
+.photo-side img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; transform: scale(1.04); transition: transform 1.4s cubic-bezier(.2,.7,.2,1); }
+.soglia .half:hover img { transform: scale(1); }
+.photo-side::after { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 40%, transparent 35%, rgba(0,0,0,.75)); }
+.photo-side .lbl { position: absolute; right: 3.5cqw; bottom: 2.6cqw; z-index: 2; text-align: right; font: italic 400 clamp(30px, 7.4cqw, 116px)/.85 var(--serif); color: #f3eee8; }
+.photo-side .meta { position: absolute; right: 3.5cqw; top: 3cqw; z-index: 2; font: 400 clamp(9px, 1cqw, 13px)/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #cfc8d8; }
+.seam { position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: linear-gradient(transparent, rgba(255,255,255,.5), transparent); z-index: 3; pointer-events: none; transition: left .9s cubic-bezier(.7,0,.2,1); }
+.name { position: absolute; left: 50%; top: 3cqw; transform: translateX(-50%); z-index: 4; font: 500 clamp(9px, 1cqw, 13px)/1 var(--mono); letter-spacing: .3em; text-transform: uppercase; color: #fff; mix-blend-mode: difference; white-space: nowrap; }
+
+/* ---------- 2. SPECTRUM ---------- */
+.spectrum { background: #120f1a; }
+.spectrum canvas.fluid { position: absolute; inset: 0; width: 100%; height: 100%; filter: blur(40px) saturate(1.25); transform: scale(1.15); }
+.float { position: absolute; z-index: 2; width: var(--w); aspect-ratio: 4/5; overflow: hidden; border-radius: 999px 999px 999px 999px / 55% 55% 45% 45%; box-shadow: 0 2cqw 6cqw rgba(0,0,0,.35); animation: drift var(--d) ease-in-out infinite alternate; }
+.float img { width: 100%; height: 100%; object-fit: cover; }
+@keyframes drift { from { transform: translate(0,0) rotate(-2deg); } to { transform: translate(var(--x), var(--y)) rotate(2deg); } }
+.spectrum .title { position: absolute; z-index: 3; left: 50%; top: 50%; transform: translate(-50%,-55%); text-align: center; color: #fff; }
+.spectrum .title h3 { margin: 0; font: italic 400 clamp(44px, 12cqw, 190px)/.8 var(--serif); letter-spacing: -.02em; mix-blend-mode: overlay; }
+.spectrum .title p { margin: 1.4cqw 0 0; font: 400 clamp(10px, 1.15cqw, 15px)/1.4 var(--mono); letter-spacing: .25em; text-transform: uppercase; }
+.chips { position: absolute; z-index: 4; left: 50%; bottom: 3cqw; transform: translateX(-50%); display: flex; gap: .7cqw; flex-wrap: nowrap; }
+.chip { display: inline-flex; align-items: center; gap: .5cqw; font: 500 clamp(8px, .95cqw, 13px)/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; color: #fff; padding: .7cqw 1cqw; border-radius: 99px; background: rgba(255,255,255,.12); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.25); white-space: nowrap; }
+.chip i { width: 1cqw; height: 1cqw; min-width: 7px; min-height: 7px; border-radius: 50%; background: var(--c); }
+.chip.on { background: #fff; color: #1a1020; }
+
+/* ---------- 3. SPECTRUM › ORANGE ---------- */
+.orange { --o: #c4561c; --o2: #ff9b4a; --o3: #3a1305; background: radial-gradient(90% 120% at 70% 20%, var(--o) 0%, #8f3410 45%, var(--o3) 100%); color: #ffe2c6; }
+.orange .big { position: absolute; left: 3.5cqw; top: 3cqw; font: 400 clamp(54px, 15.5cqw, 250px)/.78 var(--serif); letter-spacing: -.03em; color: var(--o2); mix-blend-mode: screen; margin: 0; }
+.orange .sub { position: absolute; left: 3.8cqw; top: 19.5cqw; font: 400 clamp(9px, 1.1cqw, 14px)/1.5 var(--mono); letter-spacing: .2em; text-transform: uppercase; max-width: 30cqw; }
+.orange figure { position: absolute; margin: 0; overflow: hidden; box-shadow: 0 2cqw 5cqw rgba(40,8,0,.45); }
+.orange figure img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.orange figcaption { position: absolute; left: 0; bottom: -1.9cqw; font: 400 clamp(8px, .85cqw, 11px)/1 var(--mono); letter-spacing: .1em; color: #ffcfa3; white-space: nowrap; }
+.orange figure { overflow: visible; }
+.orange .count { position: absolute; right: 3.5cqw; bottom: 3cqw; font: 400 clamp(9px, 1.05cqw, 14px)/1.4 var(--mono); letter-spacing: .2em; text-transform: uppercase; text-align: right; }
+.orange .swatch-row { position: absolute; left: 3.8cqw; bottom: 3cqw; display: flex; gap: .4cqw; }
+.orange .swatch-row span { width: 2.2cqw; height: 2.2cqw; min-width: 12px; min-height: 12px; background: var(--c); border: 1px solid rgba(255,226,198,.35); }
+
+/* ---------- 4. EXHIBITION ---------- */
+.expo { background: var(--noir); color: #d9d4cc; }
+.expo .glow { position: absolute; inset: 0; background: radial-gradient(40% 50% at 50% 48%, var(--glow, rgba(90,120,160,.18)), transparent 70%); transition: background 1.5s; }
+.expo .nav { position: absolute; left: 3.5cqw; right: 3.5cqw; top: 3cqw; display: flex; justify-content: space-between; font: 400 clamp(8px, .95cqw, 12px)/1 var(--mono); letter-spacing: .3em; text-transform: uppercase; color: #8c867f; z-index: 2; }
+.expo .work { position: absolute; left: 50%; top: 47%; transform: translate(-50%,-50%); width: 30cqw; margin: 0; z-index: 2; }
+.expo .work img { width: 100%; display: block; }
+.expo .work figcaption { display: flex; justify-content: space-between; gap: 1cqw; margin-top: 1.2cqw; font: 400 clamp(8px, .9cqw, 12px)/1.4 var(--mono); letter-spacing: .08em; color: #8c867f; }
+.expo .work figcaption b { color: #d9d4cc; font-weight: 400; font-family: var(--serif); font-style: italic; font-size: clamp(11px, 1.35cqw, 18px); letter-spacing: 0; }
+.expo .side { position: absolute; left: 3.5cqw; bottom: 3cqw; max-width: 22cqw; z-index: 2; }
+.expo .side h3 { margin: 0 0 1cqw; font: 400 clamp(26px, 4.6cqw, 72px)/.9 var(--serif); color: #ece6dd; letter-spacing: -.01em; }
+.expo .side p { margin: 0; font: 300 clamp(9px, 1cqw, 13.5px)/1.6 var(--sans); color: #8c867f; }
+.expo .progress { position: absolute; right: 3.5cqw; bottom: 3cqw; z-index: 2; display: flex; align-items: center; gap: 1cqw; font: 400 clamp(8px, .95cqw, 12px)/1 var(--mono); letter-spacing: .2em; color: #8c867f; }
+.expo .progress .bar { width: 14cqw; height: 1px; background: #2a2826; position: relative; }
+.expo .progress .bar::after { content: ""; position: absolute; left: 0; top: 0; height: 1px; width: 7%; background: #d9d4cc; }
+.expo .next { position: absolute; right: 3.5cqw; top: 50%; transform: translateY(-50%); width: 7cqw; z-index: 2; opacity: .35; filter: grayscale(.3); }
+.expo .next img { width: 100%; display: block; }
+.expo .next span { display: block; margin-top: .6cqw; font: 400 clamp(7px, .75cqw, 10px)/1.3 var(--mono); letter-spacing: .1em; color: #8c867f; }
+
+/* ---------- 5. ATLAS ---------- */
+.atlas { background: #0f0d0a; color: #efe6d6; }
+.atlas .country { position: absolute; left: 3cqw; top: 1.5cqw; margin: 0; font: 400 clamp(60px, 19cqw, 300px)/.8 var(--cond); letter-spacing: -.01em; color: transparent; -webkit-text-stroke: 1px rgba(239,230,214,.35); text-transform: uppercase; z-index: 1; }
+.atlas .route { position: absolute; right: 3.5cqw; top: 3cqw; text-align: right; font: 400 clamp(8px, .95cqw, 12px)/1.8 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #b9ae9b; z-index: 3; }
+.atlas .route b { color: #ffb347; font-weight: 500; }
+.track { position: absolute; left: 0; top: 38%; height: 44%; display: flex; gap: 1.6cqw; z-index: 2; will-change: transform; }
+.track figure { position: relative; margin: 0; height: 100%; flex: none; aspect-ratio: var(--r, 3/2); overflow: hidden; }
+.track img { height: 100%; width: 100%; object-fit: cover; display: block; transition: filter .2s; }
+.track figcaption { position: absolute; left: .8cqw; bottom: .7cqw; font: 500 clamp(8px, .85cqw, 11px)/1 var(--mono); letter-spacing: .12em; color: #fff; text-transform: uppercase; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+.atlas .speed { position: absolute; left: 3.5cqw; bottom: 3cqw; font: 400 clamp(8px, .95cqw, 12px)/1.6 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #b9ae9b; z-index: 3; }
+.atlas .speed b { color: #ffb347; font-weight: 500; }
+.atlas .cta { position: absolute; right: 3.5cqw; bottom: 3cqw; z-index: 3; font: 400 clamp(14px, 2.4cqw, 36px)/1 var(--cond); text-transform: uppercase; letter-spacing: .02em; color: #efe6d6; border-bottom: 2px solid #ffb347; padding-bottom: .3cqw; }
+
+footer.end { margin-top: 3.5rem; border-top: 1px solid var(--line); padding-top: 1.2rem; display: grid; gap: .6rem; max-width: 80ch; color: var(--muted); font-size: 14px; }
+footer.end b { color: var(--fg); font-weight: 500; }
+
+@media (prefers-reduced-motion: reduce) {
+  .grain, .float { animation: none; }
+  .soglia .half, .seam, .photo-side img { transition: none; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">lucaiaconelli.it · prove di design · v0.1</span>
+    <h1>Cinque climi, un solo buio</h1>
+    <p class="lede">Prime schermate di prova con le tue foto. Sono <b>bozze per capire se la direzione è giusta</b>, non il sito finale. Le foto restano vere immagini; animazioni e atmosfera sono il livello che nel sito diventerà WebGL. Passa il mouse sulla soglia.</p>
+  </header>
+
+  <!-- 1 SOGLIA -->
+  <section class="screen-wrap" aria-labelledby="t1">
+    <div class="screen-label">
+      <h2 id="t1"><span>01</span>La soglia</h2>
+      <p>La stessa foto vista da due lati: a sinistra tradotta in caratteri (il developer), a destra vera (il fotografo). Il lato su cui ti fermi si allarga.</p>
+    </div>
+    <div class="screen soglia" id="soglia">
+      <div class="half dev" role="link" aria-label="Developer">
+        <canvas id="ascii" aria-hidden="true"></canvas>
+        <span class="meta">15 anni · Vue / Nuxt · 15 esperimenti</span>
+        <span class="lbl">Deve<br>loper</span>
+      </div>
+      <div class="half photo-side" role="link" aria-label="Fotografia">
+        <img src="img/night__IGP7688.jpg" alt="Una figura minuscola sotto un cielo pieno di stelle">
+        <span class="meta">50.000 scatti · 35 isole</span>
+        <span class="lbl">Fotografia</span>
+      </div>
+      <div class="seam" id="seam"></div>
+      <span class="name">Luca Iaconelli</span>
+      <div class="grain"></div>
+    </div>
+  </section>
+
+  <!-- 2 SPECTRUM -->
+  <section class="screen-wrap" aria-labelledby="t2">
+    <div class="screen-label">
+      <h2 id="t2"><span>02</span>Spectrum, l'ingresso</h2>
+      <p>Arcobaleno fluido e sognante. I colori dello sfondo sono campionati dalle foto che galleggiano. Scegli una tinta per entrarci.</p>
+    </div>
+    <div class="screen spectrum">
+      <canvas class="fluid" id="fluid" aria-hidden="true"></canvas>
+      <div class="float" style="--w:11cqw; left:8cqw; top:10cqw; --x:1.5cqw; --y:2cqw; --d:7s"><img src="img/red_red_IMGP5223.jpg" alt=""></div>
+      <div class="float" style="--w:9cqw; left:24cqw; top:30cqw; --x:-1cqw; --y:-2cqw; --d:9s"><img src="img/orange__IGP7605.jpg" alt=""></div>
+      <div class="float" style="--w:8cqw; left:36cqw; top:4cqw; --x:2cqw; --y:1cqw; --d:8s"><img src="img/yellow_IMGP8807.jpg" alt=""></div>
+      <div class="float" style="--w:10cqw; right:30cqw; top:31cqw; --x:-2cqw; --y:-1cqw; --d:10s"><img src="img/green_IMGP7544.jpg" alt=""></div>
+      <div class="float" style="--w:12cqw; right:9cqw; top:7cqw; --x:-1.5cqw; --y:2.5cqw; --d:8.5s"><img src="img/blue_IMGP3104.jpg" alt=""></div>
+      <div class="float" style="--w:7cqw; right:5cqw; top:34cqw; --x:1cqw; --y:-1.5cqw; --d:7.5s"><img src="img/pink_rainbow__IMG2842.jpg" alt=""></div>
+      <div class="float" style="--w:7cqw; left:4cqw; top:35cqw; --x:1cqw; --y:-1cqw; --d:9.5s"><img src="img/rainbow_IMGP6851.jpg" alt=""></div>
+      <div class="title"><h3>Spectrum</h3><p>Il mondo esplorato per colore</p></div>
+      <div class="chips">
+        <span class="chip" style="--c:#c8242b"><i></i>Red</span>
+        <span class="chip on" style="--c:#e8772e"><i></i>Orange</span>
+        <span class="chip" style="--c:#e8c33a"><i></i>Yellow</span>
+        <span class="chip" style="--c:#7cb342"><i></i>Green</span>
+        <span class="chip" style="--c:#2f6fd6"><i></i>Blue</span>
+        <span class="chip" style="--c:#8a5cd6"><i></i>Violet</span>
+        <span class="chip" style="--c:#111"><i></i>Darkness</span>
+      </div>
+      <div class="grain"></div>
+    </div>
+  </section>
+
+  <!-- 3 ORANGE -->
+  <section class="screen-wrap" aria-labelledby="t3">
+    <div class="screen-label">
+      <h2 id="t3"><span>03</span>Spectrum › Orange</h2>
+      <p>Hai scelto un colore e tutto diventa quel colore: fondo, testi, ombre. Le opere galleggiano con molto spazio attorno. I campioni in basso sono estratti dalle foto qui sopra.</p>
+    </div>
+    <div class="screen orange" id="orange">
+      <h3 class="big">Orange</h3>
+      <p class="sub">Warmth · deserti, tramonti, luce dorata. Il calore come materia.</p>
+      <figure style="left:47cqw; top:5cqw; width:20cqw; aspect-ratio:3/2"><img src="img/orange__IGP7605.jpg" alt="Dune sovrapposte nella luce arancione"><figcaption>01 · Dune</figcaption></figure>
+      <figure style="left:71cqw; top:9cqw; width:13cqw; aspect-ratio:2/3"><img src="img/orange_yellow_IMGP6634.jpg" alt="Una persona sola nel deserto"><figcaption>02 · Deserto</figcaption></figure>
+      <figure style="left:38cqw; top:27cqw; width:15cqw; aspect-ratio:3/2"><img src="img/orange_IMGP1125.jpg" alt="Presenze indistinte in un campo arancione"><figcaption>03 · Presenze</figcaption></figure>
+      <figure style="left:58cqw; top:32cqw; width:11cqw; aspect-ratio:1/1"><img src="img/orange_IMGP4301.jpg" alt="Fotografia della serie Orange"><figcaption>04</figcaption></figure>
+      <figure style="left:87cqw; top:28cqw; width:9cqw; aspect-ratio:2/3"><img src="img/orange_IMGP5921.jpg" alt="Fotografia della serie Orange"><figcaption>05</figcaption></figure>
+      <div class="swatch-row" id="swatches" aria-label="Colori estratti dalle foto"></div>
+      <div class="count">06 opere<br>← Yellow · Red →</div>
+      <div class="grain"></div>
+    </div>
+  </section>
+
+  <!-- 4 EXHIBITION -->
+  <section class="screen-wrap" aria-labelledby="t4">
+    <div class="screen-label">
+      <h2 id="t4"><span>04</span>Exhibitions › Smallness</h2>
+      <p>Nero profondo da galleria. Una sola opera alla volta, piccola dentro tanto vuoto, come le figure nelle tue foto. Il buio intorno prende appena il colore dell'opera. A destra l'opera successiva aspetta in penombra.</p>
+    </div>
+    <div class="screen expo" id="expo">
+      <div class="glow" id="glow"></div>
+      <div class="nav"><span>Exhibitions</span><span>Smallness</span><span>Esci ✕</span></div>
+      <figure class="work">
+        <img id="expo-img" src="img/IMGP7491.jpg" alt="Una persona sola davanti al mare">
+        <figcaption><b>Davanti al mare</b><span>Giappone</span></figcaption>
+      </figure>
+      <div class="side">
+        <h3>Smallness</h3>
+        <p>La scala umana dell'esistenza. Non necessariamente solitudine: la relazione tra un corpo e la vastità che lo contiene.</p>
+      </div>
+      <div class="next" aria-hidden="true"><img src="img/lr_stars.jpg" alt=""><span>02 · dal catalogo Lightroom</span></div>
+      <div class="progress"><span>01</span><span class="bar"></span><span>14</span></div>
+      <div class="grain"></div>
+    </div>
+  </section>
+
+  <!-- 5 ATLAS -->
+  <section class="screen-wrap" aria-labelledby="t5">
+    <div class="screen-label">
+      <h2 id="t5"><span>05</span>Atlas › Giappone</h2>
+      <p>Avventuroso, in movimento come Motoyoshi. Le foto scorrono e più vanno veloci più si sfocano e si inclinano, come il mosso dei tuoi scatti. Trascina o scorri sopra la striscia.</p>
+    </div>
+    <div class="screen atlas" id="atlas">
+      <h3 class="country">Japan</h3>
+      <div class="route">Tokyo · Kamakura · Nikko · <b>Yokohama</b><br>89 fotografie</div>
+      <div class="track" id="track">
+        <figure style="--r:3/2"><img src="img/IMGP7959.jpg" alt="Un treno passa con il Fuji sullo sfondo"><figcaption>Fuji, dal treno</figcaption></figure>
+        <figure style="--r:2/3"><img src="img/IMGP8056.jpg" alt="Una bicicletta in movimento"><figcaption>Motion</figcaption></figure>
+        <figure style="--r:3/2"><img src="img/IMGP7661.jpg" alt="Binari e un treno"><figcaption>Binari</figcaption></figure>
+        <figure style="--r:3/2"><img src="img/IMGP7740.jpg" alt="Scie luminose notturne"><figcaption>Scie</figcaption></figure>
+        <figure style="--r:3/2"><img src="img/IMGP7081.jpg" alt="Una folla in città"><figcaption>Folla</figcaption></figure>
+        <figure style="--r:2/3"><img src="img/IMGP7862.jpg" alt="Una persona davanti al mare"><figcaption>Costa</figcaption></figure>
+        <figure style="--r:3/2"><img src="img/IMGP8330.jpg" alt="Specchi stradali tra le foglie"><figcaption>Specchi</figcaption></figure>
+      </div>
+      <div class="speed">Velocità <b id="vel">0</b> · mosso <b id="blur">0px</b></div>
+      <div class="cta">Inizia il viaggio →</div>
+      <div class="grain"></div>
+    </div>
+  </section>
+
+  <footer class="end">
+    <p><b>Come leggere queste bozze.</b> Tipografia, colori e ritmi sono proposte. Nel sito vero ogni clima vivrà sullo stesso fondo animato che si trasforma da una pagina all'altra, e le foto saranno immagini HTML indicizzabili, con titoli e testi alternativi.</p>
+    <p>Le foto vengono dall'archivio della lettura curatoriale; quella stellata nella mostra (02) l'ho presa direttamente dal tuo catalogo Lightroom. Didascalie e titoli sono segnaposto.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function load(src) { return new Promise(function (ok) { var i = new Image(); i.onload = function () { ok(i); }; i.onerror = function () { ok(null); }; i.src = src; }); }
+
+  // palette dominante semplice: media dei pixel più saturi
+  function palette(img, n) {
+    var c = document.createElement('canvas'), w = 40, h = 30; c.width = w; c.height = h;
+    var x = c.getContext('2d'); x.drawImage(img, 0, 0, w, h);
+    var d = x.getImageData(0, 0, w, h).data, px = [];
+    for (var i = 0; i < d.length; i += 4) {
+      var r = d[i], g = d[i+1], b = d[i+2], mx = Math.max(r,g,b), mn = Math.min(r,g,b);
+      px.push({ r: r, g: g, b: b, s: mx ? (mx - mn) / mx : 0, v: mx });
+    }
+    px.sort(function (a, b) { return (b.s * b.v) - (a.s * a.v); });
+    var out = [], step = Math.floor(px.length * 0.25 / n) || 1;
+    for (var k = 0; k < n; k++) { var p = px[k * step]; out.push('rgb(' + p.r + ',' + p.g + ',' + p.b + ')'); }
+    return out;
+  }
+
+  // 1. ASCII
+  var asciiCanvas = document.getElementById('ascii');
+  load('img/night__IGP7688.jpg').then(function (img) {
+    if (!img) return;
+    var chars = ' .:-=+*#%@';
+    function draw() {
+      var r = asciiCanvas.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+      asciiCanvas.width = r.width * dpr; asciiCanvas.height = r.height * dpr;
+      var ctx = asciiCanvas.getContext('2d'); ctx.scale(dpr, dpr);
+      ctx.fillStyle = '#000'; ctx.fillRect(0, 0, r.width, r.height);
+      var cell = Math.max(7, r.width / 70), cols = Math.ceil(r.width / cell), rows = Math.ceil(r.height / cell);
+      var s = document.createElement('canvas'); s.width = cols; s.height = rows;
+      var sx = s.getContext('2d');
+      var ir = img.width / img.height, cr = r.width / r.height, sw, sh, ox, oy;
+      if (ir > cr) { sh = img.height; sw = sh * cr; ox = (img.width - sw) * 0.3; oy = 0; } else { sw = img.width; sh = sw / cr; ox = 0; oy = (img.height - sh) / 2; }
+      sx.drawImage(img, ox, oy, sw, sh, 0, 0, cols, rows);
+      var d = sx.getImageData(0, 0, cols, rows).data;
+      ctx.font = '500 ' + cell + 'px "Geist Mono", monospace'; ctx.textBaseline = 'top';
+      for (var y = 0; y < rows; y++) for (var x = 0; x < cols; x++) {
+        var i = (y * cols + x) * 4, l = (0.3 * d[i] + 0.59 * d[i+1] + 0.11 * d[i+2]) / 255;
+        l = Math.min(1, Math.pow(l, 0.55) * 1.4);
+        var ch = chars[Math.floor(l * (chars.length - 1))];
+        if (ch === ' ') continue;
+        ctx.fillStyle = l > 0.6 ? '#d9e021' : 'rgba(217,224,33,' + (0.25 + l) + ')';
+        ctx.fillText(ch, x * cell, y * cell);
+      }
+    }
+    draw(); window.addEventListener('resize', draw);
+    var half = asciiCanvas.parentElement, t;
+    if (!reduce) half.addEventListener('mouseenter', function () { clearTimeout(t); t = setTimeout(draw, 950); });
+  });
+  var soglia = document.getElementById('soglia'), seam = document.getElementById('seam');
+  soglia.querySelectorAll('.half').forEach(function (h, i) {
+    h.addEventListener('mouseenter', function () { seam.style.left = i === 0 ? '63%' : '37%'; });
+    h.addEventListener('mouseleave', function () { seam.style.left = '50%'; });
+  });
+
+  // 2. fluido arcobaleno con colori dalle foto
+  var fluid = document.getElementById('fluid');
+  var srcs = ['img/red_red_IMGP5223.jpg','img/orange__IGP7605.jpg','img/yellow_IMGP8807.jpg','img/green_IMGP7544.jpg','img/blue_IMGP3104.jpg','img/pink_rainbow__IMG2842.jpg','img/rainbow_IMGP6851.jpg'];
+  Promise.all(srcs.map(load)).then(function (imgs) {
+    var cols = [];
+    imgs.forEach(function (im) { if (im) cols = cols.concat(palette(im, 2)); });
+    var blobs = cols.map(function (c, i) { return { c: c, a: Math.random() * 6.28, sp: 0.15 + Math.random() * 0.25, rx: 0.2 + Math.random() * 0.35, ry: 0.15 + Math.random() * 0.3, r: 0.22 + Math.random() * 0.2, cx: (i % 5) / 4, cy: Math.random() }; });
+    var ctx = fluid.getContext('2d');
+    function size() { var r = fluid.getBoundingClientRect(); fluid.width = r.width / 3; fluid.height = r.height / 3; }
+    size(); window.addEventListener('resize', size);
+    function frame(t) {
+      var w = fluid.width, h = fluid.height;
+      ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = '#140f1c'; ctx.fillRect(0, 0, w, h);
+      ctx.globalCompositeOperation = 'lighter';
+      blobs.forEach(function (b) {
+        var tt = t / 1000 * b.sp + b.a;
+        var x = (b.cx * 0.8 + 0.1 + Math.cos(tt) * b.rx * 0.5) * w, y = (b.cy * 0.8 + 0.1 + Math.sin(tt * 1.3) * b.ry * 0.5) * h;
+        var g = ctx.createRadialGradient(x, y, 0, x, y, b.r * w);
+        g.addColorStop(0, b.c.replace('rgb', 'rgba').replace(')', ',.55)')); g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+      });
+      if (!reduce) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  });
+
+  // 3. campioni estratti dalle foto arancioni
+  var sw = document.getElementById('swatches');
+  Promise.all(['img/orange__IGP7605.jpg','img/orange_yellow_IMGP6634.jpg','img/orange_IMGP1125.jpg','img/orange_IMGP4301.jpg','img/orange_IMGP5921.jpg'].map(load)).then(function (imgs) {
+    imgs.forEach(function (im) { if (!im) return; var s = document.createElement('span'); s.style.setProperty('--c', palette(im, 1)[0]); sw.appendChild(s); });
+  });
+
+  // 4. glow dal colore dell'opera
+  load('img/IMGP7491.jpg').then(function (im) {
+    if (!im) return; var c = palette(im, 1)[0].replace('rgb', 'rgba').replace(')', ',.22)');
+    document.getElementById('glow').style.setProperty('--glow', c);
+  });
+
+  // 5. striscia con velocità e mosso
+  var atlas = document.getElementById('atlas'), track = document.getElementById('track'), velEl = document.getElementById('vel'), blurEl = document.getElementById('blur');
+  var pos = 0, target = 0, last = 0, drag = false, sx0 = 0, base = 0, auto = 0.35;
+  function maxPos() { return Math.max(0, track.scrollWidth - atlas.clientWidth * 0.6); }
+  atlas.addEventListener('wheel', function (e) { e.preventDefault(); target += (e.deltaY + e.deltaX) * 1.2; }, { passive: false });
+  atlas.addEventListener('pointerdown', function (e) { drag = true; sx0 = e.clientX; base = target; atlas.setPointerCapture(e.pointerId); });
+  atlas.addEventListener('pointermove', function (e) { if (drag) target = base - (e.clientX - sx0) * 2; });
+  atlas.addEventListener('pointerup', function () { drag = false; });
+  function tick() {
+    if (!drag && !reduce) target += auto;
+    var m = maxPos(); if (target > m) target = 0; if (target < 0) target = 0;
+    pos += (target - pos) * 0.08;
+    var v = pos - last; last = pos;
+    var b = Math.min(14, Math.abs(v) * 0.6), sk = Math.max(-12, Math.min(12, v * 0.35));
+    track.style.transform = 'translateX(' + (atlas.clientWidth * 0.04 - pos) + 'px) skewX(' + (-sk) + 'deg)';
+    track.querySelectorAll('img').forEach(function (i) { i.style.filter = b > 0.4 ? 'blur(' + b.toFixed(1) + 'px)' : 'none'; });
+    velEl.textContent = Math.round(Math.abs(v) * 10); blurEl.textContent = b.toFixed(1) + 'px';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>

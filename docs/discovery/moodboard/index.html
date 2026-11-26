@@ -1,0 +1,508 @@
+<title>Moodboard lucaiaconelli.it</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: una sala buia per ogni "asse di differenza"; ogni sala prende il colore da una foto di Luca, come Spectrum. */
+:root {
+  --bg: #0e0d12;
+  --surface: #17151d;
+  --line: #2a2732;
+  --fg: #ece8f1;
+  --muted: #a39dae;
+  --accent: #e58a3c;
+  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --body: "Geist", "Segoe UI", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font: 15px/1.55 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 4rem;
+}
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: 1320px; margin: 0 auto; }
+
+header.intro { padding-block: 3.5rem 2rem; display: grid; gap: 1.25rem; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 400 clamp(2.6rem, 7vw, 5.2rem)/0.95 var(--display); margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+h1 em { color: var(--accent); }
+.lede { max-width: 62ch; color: var(--muted); margin: 0; font-size: 16px; }
+.lede strong { color: var(--fg); font-weight: 500; }
+.how { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; font: 13px/1.4 var(--mono); color: var(--muted); }
+.how span b { color: var(--fg); font-weight: 500; }
+
+nav.rooms {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-block: 1px solid var(--line);
+  margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding-inline: max(16px, env(safe-area-inset-left, 0px));
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+nav.rooms ul { list-style: none; margin: 0 auto; padding: .7rem 0; max-width: 1320px; display: flex; gap: .4rem 1.2rem; overflow-x: auto; scrollbar-width: none; }
+nav.rooms a { display: inline-flex; align-items: center; gap: .5rem; white-space: nowrap; text-decoration: none; font: 500 13px/1 var(--body); color: var(--muted); padding: .35rem 0; }
+nav.rooms a:hover { color: var(--fg); }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--room); flex: none; box-shadow: 0 0 12px color-mix(in srgb, var(--room) 60%, transparent); }
+
+section.room { padding-block: 3.5rem 1rem; scroll-margin-top: 4rem; }
+.room-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 1rem 3rem; align-items: end; margin-bottom: 1.75rem; border-top: 1px solid var(--line); padding-top: 1.5rem; }
+.room-head h2 { font: 400 clamp(2rem, 4.2vw, 3.2rem)/1 var(--display); margin: .5rem 0 0; text-wrap: balance; }
+.room-head h2 i { color: var(--room); }
+.room-head p { margin: 0; color: var(--muted); max-width: 60ch; }
+.room-head p b { color: var(--fg); font-weight: 500; }
+.swatch-src { font: 12px/1.3 var(--mono); color: var(--muted); display: flex; align-items: center; gap: .5rem; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 1.5rem; }
+.card { display: grid; grid-template-rows: auto 1fr; background: var(--surface); border: 1px solid var(--line); min-width: 0; }
+.shot { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; background: #000; cursor: zoom-in; overflow: hidden; max-width: 100%; }
+.shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.shot:hover img { transform: scale(1.03); }
+.id { position: absolute; top: .7rem; left: .7rem; font: 500 12px/1 var(--mono); letter-spacing: .06em; background: var(--bg); color: var(--fg); padding: .4rem .55rem; border-left: 3px solid var(--room); }
+.fav-badge { position: absolute; top: .7rem; right: .7rem; font: 500 11.5px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; background: var(--room); color: #0e0d12; padding: .4rem .55rem; }
+.card.fav { border-color: var(--room); }
+.src { position: absolute; bottom: .6rem; right: .6rem; font: 11px/1 var(--mono); color: var(--muted); background: color-mix(in srgb, var(--bg) 80%, transparent); padding: .3rem .45rem; }
+.body { padding: 1rem 1.1rem 1.2rem; display: grid; gap: .65rem; align-content: start; min-width: 0; }
+.body h3 { font: 400 1.6rem/1.05 var(--display); margin: 0; }
+.meta { font: 12px/1.45 var(--mono); color: var(--muted); }
+.look { margin: 0; font-size: 14.5px; }
+.look b { font-weight: 500; color: var(--room); }
+.tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+.tag { font: 11.5px/1 var(--mono); padding: .32rem .5rem; border: 1px solid var(--line); color: var(--muted); }
+.links { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; font: 500 13px/1.3 var(--body); margin-top: .2rem; }
+.links a { text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--room) 70%, transparent); padding-bottom: 1px; }
+.links a:hover { color: var(--room); }
+
+footer.note { margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 1.25rem; color: var(--muted); font-size: 13.5px; max-width: 75ch; display: grid; gap: .6rem; }
+
+dialog.lb { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 94vh; color: var(--fg); }
+dialog.lb::backdrop { background: rgba(6,5,9,.92); }
+dialog.lb img { max-width: 96vw; max-height: 86vh; display: block; object-fit: contain; margin: 0 auto; }
+dialog.lb .cap { display: flex; justify-content: space-between; gap: 1rem; font: 13px/1.4 var(--mono); color: var(--muted); padding: .7rem .2rem 0; }
+dialog.lb button { font: 500 13px/1 var(--mono); background: var(--surface); color: var(--fg); border: 1px solid var(--line); padding: .5rem .8rem; cursor: pointer; }
+
+@media (max-width: 760px) {
+  .room-head { grid-template-columns: minmax(0, 1fr); }
+  header.intro { padding-block: 2.5rem 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shot img { transition: none; }
+  .shot:hover img { transform: none; }
+}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="eyebrow">LuXDAmore · lucaiaconelli.it · ricerca di riferimento</span>
+    <h1>Cinque modi di mettere<br>una foto <em>al buio</em></h1>
+    <p class="lede">26 siti: 18 dal report, i 5 che ti ispiravano già e 3 per il mondo developer, divisi per <strong>la differenza che vale la pena vedere</strong>: quanto conta il buio, se la foto resta ferma o diventa materia, se il colore diventa ambiente, quanta luce c'è, come convivono due identità. Ogni sala prende il colore da una delle tue foto.</p>
+    <div class="how">
+      <span><b>Clic sull'immagine</b> per ingrandirla</span>
+      <span><b>Visita il sito</b> per l'esperienza vera</span>
+      <span>I bordi colorati con <b>scelto</b> sono i tuoi preferiti</span>
+      <span>Rispondimi con gli <b>ID</b>, per esempio “P3, M2, D1”</span>
+    </div>
+  </header>
+</div>
+
+<nav class="rooms" aria-label="Sale">
+  <ul>
+    <li><a href="#tuoi" style="--room:#8fa6e8"><span class="dot"></span>I tuoi riferimenti</a></li>
+    <li><a href="#developer" style="--room:#d4e02a"><span class="dot"></span>Il mondo developer</a></li>
+    <li><a href="#buio" style="--room:#c4a48a"><span class="dot"></span>Il buio protagonista</a></li>
+    <li><a href="#materia" style="--room:#a6c84a"><span class="dot"></span>La foto diventa materia</a></li>
+    <li><a href="#colore" style="--room:#e58a3c"><span class="dot"></span>Il colore è l'ambiente</a></li>
+    <li><a href="#luce" style="--room:#9fd3ea"><span class="dot"></span>Luce e respiro</a></li>
+    <li><a href="#mondi" style="--room:#9c8ae0"><span class="dot"></span>Due mondi, una persona</a></li>
+  </ul>
+</nav>
+
+<main class="wrap">
+
+  <!-- SALA 0: riferimenti dell'utente -->
+  <section class="room" id="tuoi" style="--room:#8fa6e8">
+    <div class="room-head">
+      <div>
+        <span class="swatch-src"><span class="dot"></span>dal cielo di “Stars”</span>
+        <h2>I tuoi <i>riferimenti</i></h2>
+      </div>
+      <p>I cinque siti che ti ispiravano già. Messi accanto, coprono uno per uno i climi di cui abbiamo parlato: <b>Spectrum</b> fluido (U1), <b>Exhibitions</b> noir (U2), la <b>soglia</b> rituale (U3), <b>Atlas</b> in viaggio (U4, U5).</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <button class="shot" type="button" data-full="img/U_watanabe.jpg" data-cap="U1 · Hajime Watanabe"><img src="img/U_watanabe.jpg" alt="Anteprima del sito di Hajime Watanabe: immagini liquide e psichedeliche con la scritta Exhibition" loading="lazy"><span class="id">U1</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Hajime Watanabe</h3>
+          <div class="meta">Fotografo beauty, Tokyo · Awwwards HM (scheda 2017)</div>
+          <p class="look"><b>Clima:</b> <i>Spectrum</i>. Le foto si sciolgono in una materia liquida e colorata. È il tuo “arcobaleno fluido e sognante” già realizzato.</p>
+          <div class="tags"><span class="tag">fluido</span><span class="tag">psichedelico</span><span class="tag">Spectrum</span></div>
+          <div class="links"><a href="https://hajimewatanabe.jp/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/hajime-watanabe" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/U_tajima.jpg" data-cap="U2 · Tao Tajima"><img src="img/U_tajima.jpg" alt="Anteprima del sito di Tao Tajima: treno notturno con titolo spaziato" loading="lazy"><span class="id">U2</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Tao Tajima</h3>
+          <div class="meta">Filmmaker, Tangram · Awwwards SOTD (scheda 2017) · Three.js</div>
+          <p class="look"><b>Clima:</b> <i>Exhibitions</i>. Notte, cinema, titolo spaziato al centro e lavori numerati (#001, #012). Il nero elegante che ti fa entrare.</p>
+          <div class="tags"><span class="tag">noir</span><span class="tag">cinematografico</span><span class="tag">video</span></div>
+          <div class="links"><a href="https://taotajima.jp/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/tao-tajima-filmmaker" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/U_parallax.jpg" data-cap="U3 · Project Parallax"><img src="img/U_parallax.jpg" alt="Anteprima di Project Parallax: fondo scuro caldo con titolo THIS IS PARALLAX" loading="lazy"><span class="id">U3</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Project Parallax</h3>
+          <div class="meta">Dennis Snellenberg · Awwwards HM (scheda 2023) · sito non più online</div>
+          <p class="look"><b>Clima:</b> <i>soglia</i>. “Click anywhere to enter”: un ingresso rituale su buio caldo con tipografia editoriale. Un anno di foto come progetto.</p>
+          <div class="tags"><span class="tag">ingresso rituale</span><span class="tag">scuro caldo</span><span class="tag">progetto annuale</span></div>
+          <div class="links"><a href="https://web.archive.org/web/20240112173917/https://project-parallax.com/" target="_blank" rel="noopener">Copia archiviata (gen 2024) ↗</a><a href="https://www.awwwards.com/sites/project-parallax" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/U_tismes.png" data-cap="U4 · Tismes"><img src="img/U_tismes.png" alt="Anteprima di Tismes: slider orizzontale di categorie Portrait e Landscape su fondo granuloso" loading="lazy"><span class="id">U4</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Tismes</h3>
+          <div class="meta">Fotografo di viaggio · Awwwards HM (scheda 2021) · Next.js</div>
+          <p class="look"><b>Clima:</b> <i>Atlas</i>. Viaggio come “somma infinita di ricordi”: slider orizzontale per categorie su fondo scuro con grana.</p>
+          <div class="tags"><span class="tag">viaggio</span><span class="tag">orizzontale</span><span class="tag">grana</span></div>
+          <div class="links"><a href="https://tismes.com/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/tismes" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/U_rluijten.jpg" data-cap="U5 · Ruud Luijten"><img src="img/U_rluijten.jpg" alt="Anteprima del sito di Ruud Luijten: foto di montagna sparse attorno al nome" loading="lazy"><span class="id">U5</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Ruud Luijten</h3>
+          <div class="meta">Fotografo outdoor · Awwwards SOTD (scheda 2020) · Nuxt + Prismic</div>
+          <p class="look"><b>Clima:</b> <i>Atlas / natura</i>. Foto di paesaggio sparse sul buio attorno a un nome grande con firma. Nuxt, come te.</p>
+          <div class="tags"><span class="tag">natura</span><span class="tag">scuro</span><span class="tag">Nuxt</span></div>
+          <div class="links"><a href="https://rluijten.photography/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/ruud-luijten-photography" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+
+  <!-- SALA DEV -->
+  <section class="room" id="developer" style="--room:#d4e02a">
+    <div class="room-head">
+      <div>
+        <span class="swatch-src"><span class="dot"></span>il clima del developer</span>
+        <h2>Il mondo <i>developer</i></h2>
+      </div>
+      <p>Il clima opposto a quello fotografico: brutalista, giocoso, colori acidi, il codice in vista. <b>Da notare:</b> ASCII e dithering sono già un modo di “tradurre” un'immagine in codice. Le tue foto potrebbero attraversare la soglia e diventare caratteri.</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <button class="shot" type="button" data-full="img/V_holo.png" data-cap="V1 · HOLO.g"><img src="img/V_holo.png" alt="Screenshot di HOLO.g: griglia di caratteri ASCII che si ricompongono su fondo giallo acido" loading="lazy"><span class="id">V1</span><span class="src">screenshot dal vivo</span></button>
+        <div class="body">
+          <h3>HOLO.g</h3>
+          <div class="meta">Archivio digitale di HOLO Museum · punchred.xyz</div>
+          <p class="look"><b>Clima:</b> testo ASCII che si scompone e si ricompone su giallo acido. Il codice è la superficie, non sta dietro.</p>
+          <div class="tags"><span class="tag">ASCII</span><span class="tag">scramble</span><span class="tag">giallo acido</span></div>
+          <div class="links"><a href="https://holo.punchred.xyz/" target="_blank" rel="noopener">Visita il sito ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/V_rouser.png" data-cap="V2 · Rouser"><img src="img/V_rouser.png" alt="Screenshot di Rouser About: nero con testi verde lime e una bolla 3D al centro" loading="lazy"><span class="id">V2</span><span class="src">screenshot dal vivo</span></button>
+        <div class="body">
+          <h3>Rouser</h3>
+          <div class="meta">Pagina About · Astro</div>
+          <p class="look"><b>Clima:</b> nero pieno, verde lime, grotesk enorme e una bolla 3D. Tono diretto, quasi provocatorio (“Not sorry to burst your bubble”).</p>
+          <div class="tags"><span class="tag">nero + lime</span><span class="tag">grotesk XXL</span><span class="tag">3D</span></div>
+          <div class="links"><a href="https://www.rouserlab.com/about/" target="_blank" rel="noopener">Visita il sito ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/V_offscreen.png" data-cap="V3 · Offscreen Canvas"><img src="img/V_offscreen.png" alt="Screenshot di Offscreen Canvas Issues: titolo condensato e anteprime di render ASCII e dithering" loading="lazy"><span class="id">V3</span><span class="src">screenshot dal vivo</span></button>
+        <div class="body">
+          <h3>Offscreen Canvas</h3>
+          <div class="meta">Pubblicazione su WebGL e creative coding · Three.js</div>
+          <p class="look"><b>Clima:</b> indice di esperimenti con render ASCII e dithering, titolo condensato. È il modello più diretto per il tuo Laboratory.</p>
+          <div class="tags"><span class="tag">dithering</span><span class="tag">ASCII render</span><span class="tag">indice lab</span></div>
+          <div class="links"><a href="https://offscreencanvas.com/issues/" target="_blank" rel="noopener">Visita il sito ↗</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SALA 1 -->
+  <section class="room" id="buio" style="--room:#c4a48a">
+    <div class="room-head">
+      <div>
+        <span class="swatch-src"><span class="dot"></span>dalla duna in ombra di “UnSelfie”</span>
+        <h2>Il buio <i>protagonista</i></h2>
+      </div>
+      <p>Fondi quasi neri, la fotografia è l'unica fonte di luce. <b>Da confrontare:</b> quanto l'interfaccia si nasconde (Pothier) o si fa vedere con un accento (Brimhall), e quanto pesa la tipografia (Ottografie).</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <button class="shot" type="button" data-full="img/P3.png" data-cap="P3 · Matthew Pothier"><img src="img/P3.png" alt="Anteprima del portfolio di Matthew Pothier su fondo quasi nero" loading="lazy"><span class="id">P3</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Matthew Pothier</h3>
+          <div class="meta">Fotografo · Awwwards HM 8 dic 2025 · Next + Sanity + Three.js</div>
+          <p class="look"><b>Guarda:</b> il fondo #0b0a0a, l'hero WebGL e le transizioni a sipario. È il portfolio premiato con i neri più vicini ai tuoi.</p>
+          <div class="tags"><span class="tag">scuro</span><span class="tag">WebGL</span><span class="tag">foto protagonista</span></div>
+          <div class="links"><a href="https://www.matthewpothier.com/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/matthew-pothier-portfolio" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/P4.png" data-cap="P4 · Aaron Brimhall"><img src="img/P4.png" alt="Anteprima del portfolio di Aaron Brimhall, fondo scuro con accento rosa" loading="lazy"><span class="id">P4</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Aaron Brimhall</h3>
+          <div class="meta">Fotografo · BEEM Studio · Awwwards HM 29 ott 2026</div>
+          <p class="look"><b>Guarda:</b> il loader “Develop &amp; Burn-Through” e lo scroll “Through the Lens”. L'interfaccia parla il linguaggio della camera oscura.</p>
+          <div class="tags"><span class="tag">scuro #101010</span><span class="tag">un solo accento</span><span class="tag">metafore fotografiche</span></div>
+          <div class="links"><a href="https://www.aaronbrimhall.com/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/aaron-brimhall" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/M2.jpg" data-cap="M2 · Encounter Stories"><img src="img/M2.jpg" alt="Anteprima della mostra online Encounter Stories, nero e arancione" loading="lazy"><span class="id">M2</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Encounter Stories</h3>
+          <div class="meta">Mostra online · LEOLEO · Awwwards HM 25 lug 2023 · Nuxt 2 + Lenis</div>
+          <p class="look"><b>Guarda:</b> nero e arancione intenso, l'audio come parte della visita. Estetica e stack più vicini ai tuoi tra tutte le mostre.</p>
+          <div class="tags"><span class="tag">scuro</span><span class="tag">mostra</span><span class="tag">suono</span><span class="tag">Nuxt</span></div>
+          <div class="links"><a href="https://encounter-stories.com/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/encounter-stories" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card fav">
+        <button class="shot" type="button" data-full="img/X_otto.jpg" data-cap="Ottografie 2025"><img src="img/X_otto.jpg" alt="Anteprima di Ottografie 2025, grande titolo serif su ritratto scuro" loading="lazy"><span class="fav-badge">scelto</span><span class="id">P·Otto</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Ottografie 2025</h3>
+          <div class="meta">Fotografo · Exo Ape · Awwwards SOTD 18 feb 2025 · Nuxt + Storyblok</div>
+          <p class="look"><b>Guarda:</b> la tipografia serif enorme sopra la foto. Il buio qui è pittorico e caldo, non tecnico.</p>
+          <div class="tags"><span class="tag">scuro caldo</span><span class="tag">tipografia forte</span><span class="tag">Nuxt</span></div>
+          <div class="links"><a href="https://www.ottografie.nl/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/ottografie-2025" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/P2.png" data-cap="P2 · Mark Clennon"><img src="img/P2.png" alt="Anteprima del portfolio di Mark Clennon" loading="lazy"><span class="id">P2</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Mark Clennon</h3>
+          <div class="meta">Fotografo · The Blackpepper Studio · Awwwards SOTD + DA 6 mar 2025</div>
+          <p class="look"><b>Guarda:</b> il “Diary” su un globo e la galleria Stills essenziale. Modello per Atlas, le foto per luogo.</p>
+          <div class="tags"><span class="tag">scuro</span><span class="tag">globo</span><span class="tag">Atlas</span></div>
+          <div class="links"><a href="https://www.markclennon.com/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/mark-clennon" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SALA 2 -->
+  <section class="room" id="materia" style="--room:#a6c84a">
+    <div class="room-head">
+      <div>
+        <span class="swatch-src"><span class="dot"></span>dal verde acido di “Blurred”</span>
+        <h2>La foto diventa <i>materia</i></h2>
+      </div>
+      <p>Qui l'immagine si piega, scorre, si deforma o vive in uno spazio 3D. <b>Da confrontare:</b> l'effetto che amplifica la foto (velocità di Motoyoshi) e quello che la trasforma in un oggetto (carta di Hearst, mondo di Bruno Simon).</p>
+    </div>
+    <div class="grid">
+      <article class="card fav">
+        <button class="shot" type="button" data-full="img/P1.jpg" data-cap="P1 · Takamitsu Motoyoshi"><img src="img/P1.jpg" alt="Immagine di condivisione del sito di Takamitsu Motoyoshi" loading="lazy"><span class="fav-badge">scelto</span><span class="id">P1</span><span class="src">immagine del sito</span></button>
+        <div class="body">
+          <h3>Takamitsu Motoyoshi</h3>
+          <div class="meta">Fotografo · Garden Eight · Awwwards SOTD + DA 19 feb 2025 (data da sommario)</div>
+          <p class="look"><b>Guarda:</b> lo scroll infinito che reagisce alla velocità. È il ponte più diretto verso il tuo mosso intenzionale.</p>
+          <div class="tags"><span class="tag">scroll infinito</span><span class="tag">velocità</span><span class="tag">foto come materia</span></div>
+          <div class="links"><a href="https://photoyoshi.com" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.commarts.com/webpicks/motoyoshi-takamitsu" target="_blank" rel="noopener">Scheda Commarts ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/M1.jpg" data-cap="M1 · Hearst Exhibit 2026"><img src="img/M1.jpg" alt="Anteprima di Hearst Exhibit 2026, foto che si arrotolano come carta su fondo nero" loading="lazy"><span class="id">M1</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Hearst Exhibit 2026</h3>
+          <div class="meta">Mostra online · OSMOS · Awwwards SOTD + DA 2 ago 2026 · Next + GSAP</div>
+          <p class="look"><b>Guarda:</b> le foto che si arrotolano come carta (“Paper Curl”) e la vista alternativa lista/griglia. Modello per Exhibitions.</p>
+          <div class="tags"><span class="tag">scuro</span><span class="tag">mostra a stanze</span><span class="tag">WebGL</span></div>
+          <div class="links"><a href="https://www.hollywoodexhibit2026.com" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/hearst-exhibit-2026" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/D6.jpg" data-cap="D6 · Arnaud Rocca"><img src="img/D6.jpg" alt="Anteprima del portfolio di Arnaud Rocca" loading="lazy"><span class="id">D6</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Arnaud Rocca</h3>
+          <div class="meta">Creative developer · Awwwards HM 15 mar 2026 · Nuxt + GSAP + Lenis + OGL</div>
+          <p class="look"><b>Guarda:</b> gli effetti WebGL fluidi, costruiti con componenti Vue riutilizzabili. È l'architettura pronta per il tuo Laboratory.</p>
+          <div class="tags"><span class="tag">fluid WebGL</span><span class="tag">Nuxt + OGL</span><span class="tag">Laboratory</span></div>
+          <div class="links"><a href="https://arnaudrocca.fr/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/arnaud-rocca-portfolio" target="_blank" rel="noopener">Scheda Awwwards ↗</a><a href="https://tympanus.net/codrops/2026/03/31/arnaud-roccas-portfolio-from-a-gsap-powered-motion-system-to-fluid-webgl/" target="_blank" rel="noopener">Case study ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/X_bruno.png" data-cap="Bruno Simon"><img src="img/X_bruno.png" alt="Anteprima del portfolio 3D di Bruno Simon" loading="lazy"><span class="id">D·Bruno</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Bruno Simon</h3>
+          <div class="meta">Creative developer · Awwwards SOTD 21 gen 2026 + SOTM gen 2026 · Three.js WebGPU</div>
+          <p class="look"><b>Guarda:</b> il portfolio è un mondo 3D da esplorare, con lavori e Lab come zone dello stesso mondo. È l'estremo opposto del “lasciare respirare la foto”.</p>
+          <div class="tags"><span class="tag">mondo 3D</span><span class="tag">gioco</span><span class="tag">riferimento limite</span></div>
+          <div class="links"><a href="https://bruno-simon.com" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/brunos-portfolio" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SALA 3 -->
+  <section class="room" id="colore" style="--room:#e58a3c">
+    <div class="room-head">
+      <div>
+        <span class="swatch-src"><span class="dot"></span>dal tramonto di “Orange”</span>
+        <h2>Il colore è <i>l'ambiente</i></h2>
+      </div>
+      <p>Lo spazio libero che la ricerca ha trovato: nessun sito premiato lo fa ancora per intero. <b>Da confrontare:</b> un fondo tinto pieno (Ausra) e due macchie di colore sfumate su base scura (Codrops).</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <button class="shot" type="button" data-full="img/C1.png" data-cap="C1 · Ausra Babiedaite (screenshot dal vivo)"><img src="img/C1.png" alt="Screenshot dal vivo del sito di Ausra Babiedaite, fondo rosso scuro con nome in grande" loading="lazy"><span class="id">C1</span><span class="src">screenshot dal vivo</span></button>
+        <div class="body">
+          <h3>Ausra Babiedaite</h3>
+          <div class="meta">Fotografa · nessun premio trovato</div>
+          <p class="look"><b>Guarda:</b> le foto ordinate per colore. Quando ne apri una le altre svaniscono e il fondo si tinge. Nello screenshot è in fase di caricamento.</p>
+          <div class="tags"><span class="tag">indice per colore</span><span class="tag">fondo tinto</span><span class="tag">Spectrum</span></div>
+          <div class="links"><a href="https://ausrababiedaite.com/" target="_blank" rel="noopener">Visita il sito ↗</a></div>
+        </div>
+      </article>
+      <article class="card fav">
+        <button class="shot" type="button" data-full="img/T5.webp" data-cap="T5 · Codrops, Mood-Based Backgrounds"><img src="img/T5.webp" alt="Immagine di copertina del tutorial Codrops sulla galleria 3D con sfondi basati sul mood" loading="lazy"><span class="fav-badge">scelto</span><span class="id">T5</span><span class="src">copertina Codrops</span></button>
+        <div class="body">
+          <h3>Codrops “Mood-Based Backgrounds”</h3>
+          <div class="meta">Tutorial e demo · 9 mar 2026 · Three.js</div>
+          <p class="look"><b>Guarda:</b> la demo in fondo all'articolo. Ogni immagine ha la sua palette e lo sfondo scuro sfuma tra le palette mentre scorri, con grana.</p>
+          <div class="tags"><span class="tag">palette per foto</span><span class="tag">base scura</span><span class="tag">tecnica</span></div>
+          <div class="links"><a href="https://tympanus.net/codrops/2026/03/09/building-a-scroll-reactive-3d-gallery-with-three-js-velocity-and-mood-based-backgrounds/" target="_blank" rel="noopener">Apri tutorial e demo ↗</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SALA 4 -->
+  <section class="room" id="luce" style="--room:#9fd3ea">
+    <div class="room-head">
+      <div>
+        <span class="swatch-src"><span class="dot"></span>dal cielo di “B”</span>
+        <h2>Luce e <i>respiro</i></h2>
+      </div>
+      <p>Il contrappunto: fondi chiari, spazio ampio, l'idea di “pienezza” di fosceramiche. <b>Da confrontare:</b> come cambia la percezione delle stesse scelte compositive senza il nero intorno.</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <button class="shot" type="button" data-full="img/P8.jpg" data-cap="P8 · Jon McCormack"><img src="img/P8.jpg" alt="Anteprima del sito di Jon McCormack, fotografia di natura" loading="lazy"><span class="id">P8</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Jon McCormack</h3>
+          <div class="meta">Fotografo fine art di natura · B. Anne D’Ancé · Awwwards HM 29 ott 2026</div>
+          <p class="look"><b>Guarda:</b> l'ingresso immersivo nella galleria e il percorso orizzontale. È il genere più vicino al tuo.</p>
+          <div class="tags"><span class="tag">chiaro</span><span class="tag">natura</span><span class="tag">orizzontale</span></div>
+          <div class="links"><a href="https://jonmccormack.com/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/jon-mccormack-photography" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/X_aikawa.jpg" data-cap="Kenichi Aikawa"><img src="img/X_aikawa.jpg" alt="Anteprima del portfolio di Kenichi Aikawa con carosello cilindrico su lago" loading="lazy"><span class="id">P·Aikawa</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Kenichi Aikawa</h3>
+          <div class="meta">Fotografo giapponese · Garden Eight · Awwwards HM · Nuxt + Three.js</div>
+          <p class="look"><b>Guarda:</b> il carosello cilindrico delle serie (“Journey”) sopra un titolo enorme. Paesaggio, viaggio, fondo bianco.</p>
+          <div class="tags"><span class="tag">chiaro</span><span class="tag">carosello 3D</span><span class="tag">Nuxt</span></div>
+          <div class="links"><a href="https://aikawakenichi.com/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/kenichi-aikawa-1" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/X_tanya.jpg" data-cap="Tanya Timal"><img src="img/X_tanya.jpg" alt="Anteprima del portfolio di Tanya Timal" loading="lazy"><span class="id">P·Tanya</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Tanya Timal</h3>
+          <div class="meta">Fotografa · Maksym Stepenko · Awwwards SOTD 11 nov 2023 · Nuxt</div>
+          <p class="look"><b>Guarda:</b> un servizio per ogni scroll, presentato come una serie. È vicino all'idea di mostre brevi e curate.</p>
+          <div class="tags"><span class="tag">editoriale</span><span class="tag">serie</span><span class="tag">Nuxt</span></div>
+          <div class="links"><a href="https://tanyatimal.studio/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/tanya-timal-photographer-1" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SALA 5 -->
+  <section class="room" id="mondi" style="--room:#9c8ae0">
+    <div class="room-head">
+      <div>
+        <span class="swatch-src"><span class="dot"></span>dal crepuscolo viola di “B”</span>
+        <h2>Due mondi, <i>una persona</i></h2>
+      </div>
+      <p>Come convivono developer e fotografo, o un lavoro e un laboratorio. <b>Da confrontare:</b> Gradogna divide lo schermo in due assi di scroll, design a sinistra e fotografia a destra. Gli altri usano un ingresso “rituale” prima del contenuto.</p>
+    </div>
+    <div class="grid">
+      <article class="card fav">
+        <button class="shot" type="button" data-full="img/D1.jpg" data-cap="D1 · Gianluca Gradogna"><img src="img/D1.jpg" alt="Anteprima del portfolio di Gianluca Gradogna diviso tra design e fotografia" loading="lazy"><span class="fav-badge">scelto</span><span class="id">D1</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Gianluca Gradogna</h3>
+          <div class="meta">Designer + fotografo di viaggio · Awwwards SOTD 23 gen 2025 + DA + PH · Nuxt + GSAP</div>
+          <p class="look"><b>Guarda:</b> lo split “Crafting Narrative Through Design” e “Through This Lens”, con due scroll opposti. È il precedente più vicino alla tua soglia.</p>
+          <div class="tags"><span class="tag">split developer/fotografo</span><span class="tag">scuro</span><span class="tag">Nuxt</span></div>
+          <div class="links"><a href="https://gianlucagradogna.com/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/gianluca-gradogna-portfolio" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/D2.jpg" data-cap="D2 · Olha Lazarieva"><img src="img/D2.jpg" alt="Anteprima del portfolio di Olha Lazarieva" loading="lazy"><span class="id">D2</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Olha Lazarieva</h3>
+          <div class="meta">Designer · Awwwards SOTD 2 ott 2025 · Three.js + Blender</div>
+          <p class="look"><b>Guarda:</b> l'ingresso con le sfere trasparenti e la stanza 3D usata come spazio espositivo.</p>
+          <div class="tags"><span class="tag">soglia rituale</span><span class="tag">stanza 3D</span><span class="tag">Experiences</span></div>
+          <div class="links"><a href="https://www.olhalazarieva.com/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/olha-lazarieva" target="_blank" rel="noopener">Scheda Awwwards ↗</a><a href="https://tympanus.net/codrops/2025/04/08/3d-world-in-the-browser-with-blender-and-three-js/" target="_blank" rel="noopener">Case study ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/X_landberg.jpg" data-cap="Jesper Landberg"><img src="img/X_landberg.jpg" alt="Anteprima del portfolio di Jesper Landberg" loading="lazy"><span class="id">D·Landberg</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Jesper Landberg</h3>
+          <div class="meta">Creative developer senior · Awwwards SOTD + DA 29 set 2026 · Nuxt + DatoCMS</div>
+          <p class="look"><b>Guarda:</b> come una carriera lunga viene condensata in pochi punti dentro un'esperienza sperimentale. Riferimento per la parte developer e CV.</p>
+          <div class="tags"><span class="tag">developer</span><span class="tag">CV</span><span class="tag">Nuxt</span></div>
+          <div class="links"><a href="https://jesperlandberg.com" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/jesper-landberg-4" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <button class="shot" type="button" data-full="img/X_pertant.png" data-cap="Pacôme Pertant"><img src="img/X_pertant.png" alt="Anteprima del portfolio di Pacôme Pertant" loading="lazy"><span class="id">D·Pertant</span><span class="src">anteprima Awwwards</span></button>
+        <div class="body">
+          <h3>Pacôme Pertant</h3>
+          <div class="meta">Motion + sound designer · Awwwards SOTD 9 giu 2026 + DA + PH · Nuxt + Three.js + GSAP</div>
+          <p class="look"><b>Guarda:</b> due pratiche (motion e suono) in un solo sito costruito con il tuo stack.</p>
+          <div class="tags"><span class="tag">doppia pratica</span><span class="tag">Nuxt + Three.js</span></div>
+          <div class="links"><a href="https://pacomepertant.com/" target="_blank" rel="noopener">Visita il sito ↗</a><a href="https://www.awwwards.com/sites/pacome-pertant-portfolio" target="_blank" rel="noopener">Scheda Awwwards ↗</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <footer class="note">
+    <p>Le immagini sono le anteprime che gli autori hanno caricato sulle schede Awwwards, tranne Ausra Babiedaite (screenshot dal vivo del 24 novembre 2026), Motoyoshi e Codrops (immagini di condivisione dei siti stessi). Gli screenshot automatici dei siti WebGL catturavano solo i loader, quindi le anteprime ufficiali sono più fedeli. L'esperienza vera, però, si vede solo aprendo il sito.</p>
+    <p>Gli ID con il punto (P·Otto, D·Bruno…) sono siti aggiunti per completare il confronto e non sono nella tabella iniziale del report. Le date e i premi vengono dal report; quella di Motoyoshi è da un sommario.</p>
+  </footer>
+</main>
+
+<dialog class="lb" id="lb" aria-label="Immagine ingrandita">
+  <img id="lb-img" alt="">
+  <div class="cap"><span id="lb-cap"></span><button type="button" id="lb-close">Chiudi</button></div>
+</dialog>
+
+<script>
+(function () {
+  var dlg = document.getElementById('lb');
+  var img = document.getElementById('lb-img');
+  var cap = document.getElementById('lb-cap');
+  document.querySelectorAll('.shot').forEach(function (b) {
+    b.addEventListener('click', function () {
+      img.src = b.dataset.full;
+      img.alt = b.querySelector('img').alt;
+      cap.textContent = b.dataset.cap;
+      if (dlg.showModal) dlg.showModal();
+    });
+  });
+  document.getElementById('lb-close').addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+})();
+</script>
