@@ -82,6 +82,7 @@ Tutto il catalogo dei riferimenti: [ricerca](./discovery/ricerca/siti-fotografia
 | Privacy | Niente coordinate GPS nei file pubblicati: luogo ridotto a città/paese | Sicurezza dell'Operatore |
 | Peso del repo | Export originali fuori da git; nel repo solo versioni ottimizzate o storage esterno (da decidere) | Repo pubblico e leggero |
 | Pages | Su questo repo, solo redirect | Scelta Operatore |
+| Protezione dei rami | Nessuna: niente approvazioni obbligatorie né `.github/settings.yml`; merge e push su `develop` e `main` restano concessi | Un solo manutentore; scelta Operatore |
 
 ## Lightroom e Claude
 
@@ -98,4 +99,3 @@ Il connettore Adobe (claude.ai) cerca nel catalogo Lightroom **per contenuto** (
 - Dove vivono le immagini ottimizzate (repo, storage esterno, CDN) e quanto pesano.
 - Quali album Lightroom diventano le prime mostre (servono link web condivisi).
 - Bilingue IT/EN: probabile (il CV lo è già), da decidere con la spec dei contenuti.
-- Protezione di `main` in `.github/settings.yml`: tenere l'approvazione obbligatoria anche per l'amministratore, toglierla o eliminare il file (oggi è inerte: serve l'app Probot Settings).

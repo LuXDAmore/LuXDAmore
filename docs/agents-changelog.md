@@ -1,5 +1,13 @@
 # Agents Changelog
 
+## 2026-11-26 — Nessuna protezione dei rami: via `.github/settings.yml`
+
+- **Perché:** l'Operatore vuole che merge e push restino sempre concessi, senza approvazioni obbligatorie. Il file, ereditato da WeGree, chiedeva una approvazione anche per l'amministratore e avrebbe bloccato i merge se si fosse installata l'app Probot Settings.
+- **Cosa cambia:** eliminato `.github/settings.yml`; la scelta entra nelle decisioni tecniche di `docs/00-visione-progetto.md` ed esce dalle domande aperte; spuntata la voce del TODO; tolta la riga da `docs/01-ambienti-e-deploy.md`.
+- **Verifica:** su GitHub `main` e `develop` non hanno protezioni né rulesets (letto via API).
+- **Documentazione:** `docs/00-visione-progetto.md`, `docs/01-ambienti-e-deploy.md`, `docs/TODO.md`.
+- **Resta:** Operatore: primo caricamento FTP da `main`.
+
 ## 2026-11-26 — Codex su richiesta, modifiche piccole senza PR
 
 - **Perché:** l'Operatore non vuole consumare la quota di Codex per le cose piccole: la review di Codex si chiede solo quando lo dice lui, e le modifiche piccole vanno direttamente su `develop` e `main` senza PR.
