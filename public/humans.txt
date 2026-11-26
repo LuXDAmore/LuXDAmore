@@ -1,0 +1,14 @@
+/* TEAM */
+Developer and photographer: Luca Iaconelli
+Site: https://lucaiaconelli.it
+GitHub: https://github.com/LuXDAmore
+From: Italy
+X: @luxdamore
+Instagram: https://www.instagram.com/luxdamore
+
+/* SITE */
+Standards: HTML5, CSS3, JavaScript
+Components: Vue
+Software: Nuxt
+Language: Italian
+Doctype: HTML5
