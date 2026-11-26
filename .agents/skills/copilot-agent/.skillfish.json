@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "copilot-agent",
+  "owner": "srwbsw",
+  "repo": "second-opinion-skill",
+  "path": "skills/copilot-agent",
+  "branch": "main",
+  "sha": "dd5ce7b6f375c831432c299e79486a8f19473c98",
+  "source": "manual"
+}
