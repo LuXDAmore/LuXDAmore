@@ -14,7 +14,7 @@ Tre blocchi con file disgiunti, eseguibili in parallelo; ogni blocco usa le deci
 - Rimossi: `server/`, `shared/`, `i18n/`, contenuti WeGree di `public/` e `test/` (test e stub). Resta un test della homepage con `@nuxt/test-utils`.
 - Config dei tool: si tiene un file solo se un script, la CI o l'editor lo usa; si adattano i riferimenti WeGree (es. alias `#supabase` in `vitest.config.mts`). Playwright, Codecov e simili escono finché non servono.
 - `.gitignore`: template Node/Nuxt pulito + `certificates/`, `.env*`, `*.zip`, `.specdd/bootstrap.local.md`, `.claude/settings.local.json`, immagini di `docs/discovery/` (`docs/discovery/**/assets/`); blocco preventivo per originali foto, cataloghi Lightroom e chiavi sciolte (`*.lrcat`, `*.dng`, `*.cr3`, `*.xmp`, `*.pem`, `*.key`…).
-- File generici del repo tenuti: `.github/workflows/security.yml` (actionlint, CodeQL, Scorecard), `.github/workflows/clear-pr-cache.yml`, `.github/dependabot.yml`, `.github/settings.yml`, `.github/FUNDING.yml` (solo account `luxdamore`). Si tengono perché sono generici, non hanno dominio WeGree e non richiedono segreti.
+- File generici del repo tenuti: `.github/workflows/security.yml` (actionlint, CodeQL, Scorecard), `.github/dependabot.yml`, `.github/settings.yml`, `.github/FUNDING.yml` (solo account `luxdamore`). Si tengono perché sono generici, non hanno dominio WeGree e non richiedono segreti.
 - `.mcp.json`: tolto il server Supabase di WeGree; restano solo server generici senza riferimenti a progetti di terzi.
 - `.worktreeinclude`: nessun `.env`.
 - `renovate.json`: contenuto deciso dall'Operatore, solo riformattato.

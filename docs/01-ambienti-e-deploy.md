@@ -56,7 +56,6 @@ Workflow in `.github/workflows/` (azioni fissate per SHA, con il tag nel comment
 
 - `ci.yml` — sulle PR e sui push su `develop` e `master`, con Node da `.nvmrc` e pnpm da `packageManager`: `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm generate`.
 - `security.yml` — sulle PR, sui push su `master` e ogni lunedì (cron `24 4 * * 1`, UTC): actionlint sui workflow; CodeQL (JavaScript/TypeScript, config in `.github/codeql/codeql-config.yml`) e OpenSSF Scorecard (risultati SARIF caricati in Code scanning, non pubblicati) solo se il repo è pubblico.
-- `clear-pr-cache.yml` — alla chiusura di una PR cancella le cache di Actions legate al suo ref di merge, così non occupano spazio.
 - `pages.yml` — il redirect di GitHub Pages descritto sopra.
 
 Altri file del repo in `.github/`:
