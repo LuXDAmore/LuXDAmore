@@ -1,5 +1,13 @@
 # Agents Changelog
 
+## 2026-11-26 — Chiusura della spec 002: `main` in produzione
+
+- **Perché:** PR #5 mergiata col via dell'Operatore; restava da allineare spec e TODO allo stato reale.
+- **Cosa cambia:** spuntati T4 e T5 della spec 002 e le azioni dell'Operatore fatte (`main` di default, `main` ammesso dall'ambiente `github-pages`, Pages con sorgente GitHub Actions); restano aperte l'eliminazione di `master` (T6) e la decisione su `.github/settings.yml`, ora anche tra le domande aperte. Default setup di CodeQL spento.
+- **Verifica:** dopo il merge di `develop` in `main`, CI, Security e Pages verdi su `main`; `https://luxdamore.github.io/LuXDAmore/` pubblica il redirect a `https://lucaiaconelli.it` (meta refresh, canonical, `location.replace`).
+- **Documentazione:** `.specdd/002-main-branch/tasks.md`, `app.sdd`, `docs/TODO.md`, `docs/00-visione-progetto.md`.
+- **Resta:** Operatore: eliminare `master`, decidere `.github/settings.yml`, primo caricamento FTP da `main`.
+
 ## 2026-11-26 — Ramo di produzione `main` al posto di `master` (spec 002)
 
 - **Perché:** dopo il merge della spec 001 l'Operatore vuole usare `main` come ramo principale; `master` verrà eliminato.
