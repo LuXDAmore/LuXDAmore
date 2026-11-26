@@ -15,7 +15,7 @@
 - [ ] 🟡 **Caricare via FTP la homepage generata** (`pnpm generate`, contenuto di `.output/public` nella radice di `lucaiaconelli.it`) dopo il merge della spec 001 su `master`.
 - [ ] 🟡 **Scegliere gli album Lightroom delle prime mostre** e condividerli via link web (domanda aperta in `docs/00-visione-progetto.md`).
 
-## Fase 1 — Base del repo (spec 001) ← fase attuale
+## Fase 1 — Base del repo (spec 001)
 
 - [x] 🔴 Copie dei segreti WeGree eliminate; spec WeGree rimosse da `.specdd/`; skill vendor in una PR separata.
 - [x] 🔴 App Nuxt minima in generazione statica: homepage vuota ma semantica (`lang="it"`, `<main>`, `<h1>`, title e description), con un test.
@@ -23,12 +23,12 @@
 - [x] 🔴 Documentazione riscritta per il portfolio (`CLAUDE.md`, `DESIGN.md`, `docs/`).
 - [x] 🔴 CI (`ci.yml`: typecheck, lint, test, generate, senza segreti), `security.yml` con azioni fissate a SHA verificati, redirect Pages (`pages.yml` + `.github/pages/`).
 - [x] 🔴 Scansione di dominio e segreti sul diff.
-- [ ] 🔴 Review degli agenti e gate pre-PR.
-- [ ] 🔴 PR in bozza verso `develop`, giri `@codex review` fino a esito pulito, merge col via dell'Operatore.
+- [x] 🔴 Review degli agenti e gate pre-PR.
+- [x] 🔴 PR in bozza verso `develop`, giri `@codex review` fino a esito pulito, merge col via dell'Operatore.
 
 **Gate:** `pnpm install`, `typecheck`, `lint`, `test` e `generate` verdi in locale e in CI; `README.md` invariato; nessun riferimento al dominio WeGree fuori dalle menzioni volute.
 
-## Fase 2 — Design della soglia e portfolio fotografico
+## Fase 2 — Design della soglia e portfolio fotografico ← fase attuale
 
 - [ ] 🔴 Spec del design della soglia (developer / fotografia): copy, cosa si vede prima della scelta, climi, movimento; scrive `DESIGN.md`.
 - [ ] 🔴 Spec della pipeline delle foto: export da Lightroom in una cartella del progetto → script di build (varianti AVIF/WebP, colori dominanti, EXIF ripuliti senza GPS, segnaposto) → JSON letto da Nuxt.
@@ -36,6 +36,7 @@
 - [ ] 🔴 Spec del portfolio fotografico: prime mostre (`Exhibitions`) e percorso `Spectrum`.
 - [ ] 🟡 Mondo developer: per ora un link al CV esistente (`curriculumvitae.lucaiaconelli.it`) e agli esperimenti.
 - [ ] 🟡 Decidere il bilingue IT/EN (spec dei contenuti).
+- [ ] 🟢 Advisory moderati su due dipendenze transitive degli strumenti (`glob` via `@nuxt/test-utils`, `minimatch` via `nitropack`): non finiscono nel sito statico; si chiudono con gli aggiornamenti a monte.
 - [ ] 🟢 Icone: quando servono, installare le collezioni `@iconify-json/*` e usare il bundle client di `@nuxt/icon` (l'host FTP non ha l'endpoint server `/api/_nuxt_icon`).
 
 **Gate:** soglia e prime mostre navigabili da tastiera, foto come vere `<img>` con `alt`, nessuna coordinata GPS nei file pubblicati, peso delle pagine misurato.

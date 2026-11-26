@@ -6,6 +6,6 @@
 - [x] T3 — Blocco C (CLAUDE.md, DESIGN.md, docs/, discovery) → verifica: `docs/README.md` senza link rotti
 - [x] T4 — Workflow CI minima e `pages.yml` + `.github/pages/` → verifica: YAML valido, nessun secret richiesto
 - [x] T5 — Scansione dominio e segreti sul diff (criteri R4, R5)
-- [ ] T6 — `@reviewer`, `@design-system-checker` (UI), gate pre-PR
+- [x] T6 — `@reviewer`, `@design-system-checker` (UI), gate pre-PR → fatto con i due agenti e i giri Codex; il workflow `pre-pr-review` non era disponibile nella sessione
 - [x] T7 — `docs/TODO.md` + `docs/agents-changelog.md` aggiornati
-- [ ] T8 — PR in bozza `feature/claude/repo-alignment` → `develop`, giri `@codex review` fino a esito pulito, poi via dell'Operatore per il merge
+- [x] T8 — PR in bozza `feature/claude/repo-alignment` → `develop`, giri `@codex review` fino a esito pulito, poi via dell'Operatore per il merge
