@@ -1,0 +1,938 @@
+<title>Tokyo in Motion</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=IBM+Plex+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap">
+<style>
+/* Layout: photographs scattered at three depths, ordered by colour from blue hour to neon red, drifting vertically; behind them, traffic light trails crossing horizontally. */
+:root {
+  --night: #030408;
+  --ink: #eef1f7;
+  --dim: #8b91a2;
+  --signal: #ff3346;
+  --display: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --title: "Dela Gothic One", "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; background: var(--night); color: var(--ink); overflow: hidden; }
+body {
+  font-family: var(--display);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+
+.top {
+  position: fixed; left: 0; right: 0; top: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 18px);
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.name { font-weight: 700; font-size: 13px; letter-spacing: .04em; }
+nav { display: flex; gap: 22px; }
+nav a, .lang button {
+  color: var(--dim); text-decoration: none; font-size: 13px; letter-spacing: .06em;
+  background: none; border: 0; padding: 4px 0; cursor: pointer; font-family: inherit;
+}
+nav a[aria-current="page"] { color: var(--ink); }
+nav a[aria-current="page"]::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--signal); margin-right: 8px; vertical-align: 2px; box-shadow: 0 0 10px var(--signal); }
+nav a[aria-disabled="true"] { cursor: default; }
+.lang { display: flex; gap: 10px; }
+.lang button { font-family: var(--mono); font-size: 12px; }
+.lang button[aria-pressed="true"] { color: var(--ink); }
+a:focus-visible, button:focus-visible { outline: 1px solid var(--signal); outline-offset: 4px; }
+
+.intro {
+  position: fixed; z-index: 1; inset: 0;
+  display: grid; place-content: center; justify-items: center; gap: 18px;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  text-align: center; pointer-events: none; will-change: transform;
+}
+.eyebrow { margin: 0; font-family: var(--mono); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); }
+h1 { margin: 0; font-family: var(--title); font-weight: 400; line-height: .92; letter-spacing: -.01em; font-size: clamp(52px, 11.5vw, 190px); text-wrap: balance; text-shadow: 0 2px 50px rgba(3, 4, 8, .8); }
+h1 span { display: block; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.no-gl body { overflow: auto; touch-action: auto; }
+.no-gl #gl { display: none; }
+.no-gl .intro { transform: none !important; }
+.no-gl .gallery { position: static; width: auto; height: auto; clip: auto; overflow: visible; white-space: normal; display: grid; gap: 24px; padding-block: 70vh 120px; max-width: 720px; margin: 0 auto; list-style: none; }
+.no-gl .gallery img { width: 100%; height: auto; display: block; }
+
+@media (max-width: 720px) {
+  nav { gap: 14px; }
+  .name { display: none; }
+}
+</style>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<header class="top">
+  <span class="name">Luca Iaconelli</span>
+  <nav aria-label="Main">
+    <a href="#colors" aria-disabled="true" data-i18n="colors">Colors</a>
+    <a href="#exhibitions" aria-current="page" data-i18n="exhibitions">Exhibitions</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" id="lang-en" aria-pressed="true">EN</button>
+    <button type="button" id="lang-it" aria-pressed="false">IT</button>
+  </div>
+</header>
+
+<main>
+  <section class="intro" id="intro">
+    <p class="eyebrow" data-i18n="eyebrow">Exhibition 01 · Tokyo, 2017–2026</p>
+    <h1><span>Tokyo</span><span>in Motion</span></h1>
+  </section>
+  <ol class="gallery sr-only" id="gallery" aria-label="Photographs"></ol>
+</main>
+
+<script>
+(() => {
+  // ---------- copy: English first, Italian second ----------
+  const COPY = {
+    en: {
+      colors: 'Colors', exhibitions: 'Exhibitions',
+      eyebrow: 'Exhibition 01 · Tokyo, 2017–2026',
+      alt: n => `Tokyo, long exposure, frame ${n}`,
+    },
+    it: {
+      colors: 'Colori', exhibitions: 'Mostre',
+      eyebrow: 'Mostra 01 · Tokyo, 2017–2026',
+      alt: n => `Tokyo, posa lunga, scatto ${n}`,
+    },
+  };
+  function setLang(l) {
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = COPY[l][el.dataset.i18n]; });
+    document.getElementById('lang-en').setAttribute('aria-pressed', l === 'en');
+    document.getElementById('lang-it').setAttribute('aria-pressed', l === 'it');
+    document.querySelectorAll('#gallery img').forEach((img, i) => { img.alt = COPY[l].alt(i + 1); });
+  }
+  document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
+  document.getElementById('lang-it').addEventListener('click', () => setLang('it'));
+  document.querySelector('a[aria-disabled="true"]').addEventListener('click', e => e.preventDefault());
+
+  // ---------- photographs, with the dominant hue of each (measured beforehand) ----------
+  const SIZES = [[958,1280],[958,1280],[958,1280],[1280,854],[1280,854],[1280,854],[1280,854],[1280,854],[1280,854],[1280,854],[1280,854],[854,1280],[1280,854],[1280,854],[1280,854],[1280,854],[1280,854],[1280,854],[854,1280],[854,1280],[1280,854],[1280,854],[1280,854],[1280,854],[854,1280],[1280,854],[1280,854],[1280,854],[854,1280],[1280,854],[854,1280],[1280,854],[1280,854],[854,1280],[1280,848],[1280,854]];
+  const HUES = [137,118,40,30,22,43,31,353,13,33,201,230,23,27,34,12,37,34,38,42,52,160,239,211,207,242,58,211,211,28,32,32,338,15,57,26];
+  const rnd = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
+  // colour journey: blue hour → green → yellow → amber → red neon
+  const hueKey = h => h >= 180 && h < 300 ? (260 - h) / 80 : h >= 90 && h < 180 ? 1 + (180 - h) / 90 : h < 90 ? 2 + (90 - h) / 90 : 3 + (360 - h) / 60;
+  const photos = SIZES.map(([w, h], i) => ({ i, src: `img/t${String(i).padStart(2, '0')}.jpg`, ar: w / h, hue: HUES[i], tex: null, ready: false, fade: 0 }));
+  const order = [...photos].sort((a, b) => hueKey(a.hue) - hueKey(b.hue));
+  const gallery = document.getElementById('gallery');
+  order.forEach((p, n) => {
+    const li = document.createElement('li'), img = document.createElement('img');
+    img.loading = 'lazy'; img.decoding = 'async'; img.src = p.src; img.alt = COPY.en.alt(n + 1);
+    li.append(img); gallery.append(li);
+  });
+
+  const canvas = document.getElementById('gl');
+  const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, premultipliedAlpha: false });
+  if (!gl) { document.documentElement.classList.add('no-gl'); return; }
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+  // if the GPU drops the context (a phone sending the tab to the background) the plain gallery shows; when it comes back, start again
+  let lost = false;
+  canvas.addEventListener('webglcontextlost', e => { e.preventDefault(); lost = true; document.documentElement.classList.add('no-gl'); });
+  canvas.addEventListener('webglcontextrestored', () => location.reload());
+
+  // ---------- GL helpers ----------
+  function sh(type, src) {
+    const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  function prog(vs, fs) {
+    const p = gl.createProgram();
+    gl.attachShader(p, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    const u = {}; const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
+    for (let k = 0; k < n; k++) { const info = gl.getActiveUniform(p, k); u[info.name] = gl.getUniformLocation(p, info.name); }
+    return { p, u };
+  }
+  const VS_FULL = `#version 300 es
+  layout(location=0) in vec2 p; out vec2 uv;
+  void main(){ uv = p; gl_Position = vec4(p*2.-1., 0., 1.); }`;
+  const VS_WORLD = `#version 300 es
+  layout(location=0) in vec2 p; uniform mat4 vp; uniform vec3 c; uniform vec2 sz; out vec2 uv;
+  void main(){ uv = p; vec3 w = c + vec3((p.x - .5)*sz.x, (.5 - p.y)*sz.y, 0.); gl_Position = vp*vec4(w, 1.); }`;
+
+  // the city behind: a glow on the horizon, then light added on top (trails, lamps, signals)
+  const FS_HAZE = `#version 300 es
+  precision highp float; in vec2 uv; out vec4 o;
+  uniform float hy; uniform vec3 tint;
+  void main(){
+    float d = uv.y - hy;                                   // above the horizon > 0
+    vec3 zen = vec3(.005, .006, .014);
+    vec3 glow = mix(vec3(.3, .15, .12), tint*.45 + vec3(.04, .035, .07), .5);   // light pollution, tinted by the photograph
+    float up = max(d, 0.), dn = max(-d, 0.);
+    // continuous at the horizon: the glow rises from the city and fades into the dark sky
+    vec3 c = d > 0. ? zen + glow*(.2*exp(-up*10.) + .05*exp(-up*2.5)) : zen + glow*.25*exp(-dn*12.);
+    o = vec4(c, 1.);
+  }`;
+  const FS_COMP = `#version 300 es
+  precision highp float; in vec2 uv; out vec4 o;
+  uniform sampler2D img; uniform vec2 res; uniform float t;
+  float h2(vec2 q){ return fract(sin(dot(q, vec2(12.9898, 78.233)))*43758.5453); }
+  vec3 filmic(vec3 x){ return clamp((x*(2.51*x + .03))/(x*(2.43*x + .59) + .14), 0., 1.); }
+  void main(){
+    vec3 c = filmic(texture(img, uv).rgb*.95);
+    vec2 q = uv - .5;
+    c *= mix(.72, 1., smoothstep(.95, .2, length(q*vec2(1., 1.1))));
+    c += (h2(floor(uv*res) + fract(t)*61.) - .5)*(2./255.);   // dither: no bands in the dark gradients
+    o = vec4(c, 1.);
+  }`;
+  // a light trail: a ribbon around the projected path, bright core and soft halo
+  const VS_RIB = `#version 300 es
+  layout(location=0) in vec2 pos; layout(location=1) in float ac; layout(location=2) in vec3 col; layout(location=3) in float aam;
+  uniform vec2 res; out float a; out float am; out vec3 c;
+  void main(){ a = ac; am = aam; c = col; vec2 q = pos/res*2. - 1.; gl_Position = vec4(q.x, -q.y, 0., 1.); }`;
+  const FS_RIB = `#version 300 es
+  precision highp float; in float a; in float am; in vec3 c; out vec4 o;
+  void main(){ float k = exp(-a*a), h = .2/(1. + a*a*.45), e = 1. - clamp(abs(a)/max(am, 1e-3), 0., 1.); o = vec4(c*(k + h)*e*e, 1.); }`;
+  // a point of light: street lamps, traffic signals, a car standing still while the shutter is open
+  const VS_PT = `#version 300 es
+  layout(location=0) in vec2 pos; layout(location=1) in float size; layout(location=2) in vec3 col;
+  uniform vec2 res; uniform float dpr; out vec3 c; out float st; out float bk;
+  void main(){ c = col; float sz = abs(size); bk = sz > 999. ? 1. : 0.; st = size < 0. ? 1. : 0.; vec2 q = pos/res*2. - 1.; gl_Position = vec4(q.x, -q.y, 0., 1.); gl_PointSize = (sz - bk*1000.)*dpr; }`;
+  const FS_PT = `#version 300 es
+  precision highp float; in vec3 c; in float st; in float bk; out vec4 o;
+  void main(){
+    vec2 q = gl_PointCoord*2. - 1.; float r2 = dot(q, q); if (r2 > 1.) discard;
+    float r = sqrt(r2), a = atan(q.y, q.x);
+    if (bk > .5) { o = vec4(c*(smoothstep(1., .8, r)*.78 + smoothstep(.6, .92, r)*smoothstep(1., .92, r)*.18), 1.); return; }
+    float core = exp(-r2*(st > .5 ? 70. : 5.)), halo = (st > .5 ? .16 : .25)*exp(-r2*(st > .5 ? 10. : 1.5));
+    float star = st*pow(abs(cos(7.*a)), 90.)*exp(-r*3.)*.6;
+    o = vec4(c*(core + halo + star)*(1. - r2), 1.);
+  }`;
+
+  // a very light trail behind the photo, made from the photo's own edge, as if the camera caught it moving
+  const FS_TRAIL = `#version 300 es
+  precision highp float; in vec2 uv; out vec4 o;
+  uniform sampler2D tex; uniform float below; uniform float inten; uniform float dim;
+  void main(){
+    float s = below > .5 ? uv.y : 1. - uv.y;
+    vec3 acc = vec3(0.);
+    for (int i = 0; i < 6; i++) {
+      float v = float(i)/5.*.07;
+      acc += texture(tex, vec2(uv.x, below > .5 ? 1. - v : v)).rgb;
+    }
+    vec3 c = acc/6.;
+    float a = inten*pow(1. - s, 2.2)*smoothstep(0., .04, uv.x)*smoothstep(0., .04, 1. - uv.x);
+    o = vec4(c*dim, a);
+  }`;
+
+  // the photograph: always sharp
+  const FS_PHOTO = `#version 300 es
+  precision highp float; in vec2 uv; out vec4 o;
+  uniform sampler2D tex; uniform float alpha; uniform float dim;
+  void main(){
+    vec3 c = texture(tex, uv).rgb;
+    vec2 e = smoothstep(vec2(0.), vec2(.004), uv)*smoothstep(vec2(0.), vec2(.004), 1. - uv);
+    o = vec4(c*dim, alpha*e.x*e.y);
+  }`;
+
+  const P = { comp: prog(VS_FULL, FS_COMP), haze: prog(VS_FULL, FS_HAZE), rib: prog(VS_RIB, FS_RIB), pt: prog(VS_PT, FS_PT), trail: prog(VS_WORLD, FS_TRAIL), photo: prog(VS_WORLD, FS_PHOTO) };
+  const vao = gl.createVertexArray();
+  gl.bindVertexArray(vao);
+  const quad = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0,0, 1,0, 0,1, 1,1]), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0);
+  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+  photos.forEach(p => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.onload = () => {
+      const t = gl.createTexture();
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      gl.generateMipmap(gl.TEXTURE_2D);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      p.tex = t; p.ready = true;
+    };
+    img.src = p.src;
+  });
+
+  // ---------- the city behind: an intersection seen from the corner ----------
+  // Units are metres. Every vehicle follows a fixed route (straight on, or a turn), can change lane,
+  // keeps its distance (IDM car-following), stops at red lights. Its trail is the real history of its
+  // positions during the exposure: lane changes, turns and braking all show in the shape of the light.
+  const rr = Math.random;
+  const TEXP = 1.5;                      // seconds of exposure behind every trail
+  const LIGHT = .16;                     // size of a lamp, metres
+  const VSTRIDE = 6, RSTRIDE = 7, MAXV = 120000, MAXP = 4000;
+  const ribData = new Float32Array(MAXV * RSTRIDE), ptData = new Float32Array(MAXP * VSTRIDE);
+  let ribCount = 0, ptCount = 0;
+  function dynVAO(bytes, rib) {
+    const a = gl.createVertexArray(); gl.bindVertexArray(a);
+    const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, bytes, gl.DYNAMIC_DRAW);
+    const st = rib ? 28 : 24;
+    gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, st, 0);
+    gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1, 1, gl.FLOAT, false, st, 8);
+    if (rib) { gl.enableVertexAttribArray(3); gl.vertexAttribPointer(3, 1, gl.FLOAT, false, st, 12); }
+    gl.enableVertexAttribArray(2); gl.vertexAttribPointer(2, 3, gl.FLOAT, false, st, rib ? 16 : 12);
+    gl.bindVertexArray(vao);
+    return { a, b };
+  }
+  const ribVAO = dynVAO(ribData.byteLength, true), ptVAO = dynVAO(ptData.byteLength, false);
+  // the light of the street is accumulated in high dynamic range, like on a sensor
+  const floatFB = !!gl.getExtension('EXT_color_buffer_float');
+  let bgFB = null;
+  function makeFB(w, h) {
+    if (bgFB) { gl.deleteTexture(bgFB.tex); gl.deleteFramebuffer(bgFB.fb); }
+    const tex = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, tex);
+    if (floatFB) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, w, h, 0, gl.RGBA, gl.HALF_FLOAT, null);
+    else gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    const fb = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.activeTexture(gl.TEXTURE0);
+    bgFB = { tex, fb };
+  }
+
+  // route geometry, sampled every metre
+  function line(x0, z0, x1, z1) { const n = Math.max(1, Math.round(Math.hypot(x1 - x0, z1 - z0))), o = []; for (let k = 0; k <= n; k++) o.push([x0 + (x1 - x0) * k / n, z0 + (z1 - z0) * k / n]); return o; }
+  const curveX = (x0, x1, z0, amp, per, xc) => line(x0, 0, x1, 0).map(q => [q[0], z0 + amp * Math.sin((q[0] - xc) / per)]);
+  const curveZ = (x0, z0, z1, amp, per, zc) => line(0, z0, 0, z1).map(q => [x0 + amp * Math.sin((q[1] - zc) / per), q[1]]);
+  function arc(cx, cz, r, a0, a1) { const n = Math.max(2, Math.round(Math.abs(a1 - a0) * r)), o = []; for (let k = 0; k <= n; k++) { const a = a0 + (a1 - a0) * k / n; o.push([cx + r * Math.cos(a), cz + r * Math.sin(a)]); } return o; }
+  function route(parts, opt) {
+    const xz = [];
+    parts.forEach(pp => pp.forEach((q, k) => { if (k || !xz.length) xz.push(q); }));
+    const pts = [], cum = [0];
+    for (let k = 0; k < xz.length; k++) {
+      const a = xz[Math.max(0, k - 1)], b = xz[Math.min(xz.length - 1, k + 1)];
+      const tx = b[0] - a[0], tz = b[1] - a[1], l = Math.hypot(tx, tz) || 1;
+      const y = opt.y ? opt.y(xz[k][0], xz[k][1]) : .22 * Math.sin(xz[k][0] / 37 + xz[k][1] / 29);
+      pts.push({ x: xz[k][0], y, z: xz[k][1], nx: -tz / l, nz: tx / l });
+      if (k) cum.push(cum[k - 1] + Math.hypot(xz[k][0] - xz[k - 1][0], xz[k][1] - xz[k - 1][1]));
+    }
+    return { pts, cum, len: cum[cum.length - 1], ...opt };
+  }
+  function at(r, s) {
+    const c = r.cum; let lo = 0, hi = c.length - 1;
+    if (s <= 0) return r.pts[0]; if (s >= c[hi]) return r.pts[hi];
+    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (c[m] <= s) lo = m; else hi = m; }
+    const f = (s - c[lo]) / (c[hi] - c[lo] || 1), a = r.pts[lo], b = r.pts[hi];
+    return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f, z: a.z + (b.z - a.z) * f, nx: a.nx, nz: a.nz };
+  }
+
+  // the network: avenue A and the cross street C meet in front of us; avenue B further back; an elevated highway; a far avenue
+  const RED = [1, .07, .16], WHITE = [.93, .95, 1], AMBER = [1, .55, .1];
+  const R = 6;
+  const hwY = (x, z) => 15 + 1.2 * Math.sin(x / 90);
+  const hwZ = x => 52 + 6 * Math.sin(x / 70);
+  const routes = {
+    AE: route([curveX(-340, 340, 34.5, 2.2, 150, 10)], { origin: 'AE', lanes: [-1.6, 1.6], stops: [{ s: 340 + 2, sig: 'A' }], col: RED, rate: 0.10 }),
+    AEturn: route([curveX(-340, 13.5 - R, 34.5, 2.2, 150, 10), arc(13.5 - R, 34.5 + R, R, -Math.PI / 2, 0), curveZ(13.5, 34.5 + R, 380, 1.8, 160, 32)], { origin: 'AE', lanes: [-1.6, 1.6], stops: [{ s: 340 + 2, sig: 'A' }], col: RED, rate: 0.03 }),
+    AW: route([curveX(340, -340, 29.5, 2.2, 150, 10)], { origin: 'AW', lanes: [-1.6, 1.6], stops: [{ s: 340 - 18, sig: 'A' }], col: WHITE, rate: 0.10 }),
+    CN: route([curveZ(13.5, -30, 380, 1.8, 160, 32)], { origin: 'CN', lanes: [0], stops: [{ s: 30 + 25, sig: 'C' }, { s: 30 + 92, sig: 'D' }], col: RED, rate: 0.06 }),
+    CS: route([curveZ(6.5, 380, -30, 1.8, 160, 32)], { origin: 'CS', lanes: [0], stops: [{ s: 380 - 106, sig: 'D' }, { s: 380 - 39, sig: 'C' }], col: WHITE, rate: 0.05 }),
+    CSturn: route([curveZ(6.5, 380, 29.5 + R, 1.8, 160, 32), arc(6.5 - R, 29.5 + R, R, 0, -Math.PI / 2), curveX(6.5 - R, -340, 29.5, 2.2, 150, 10)], { origin: 'CS', lanes: [0], stops: [{ s: 380 - 106, sig: 'D' }, { s: 380 - 39, sig: 'C' }], col: WHITE, rate: 0.02 }),
+    NE: route([curveX(-340, 340, 9, 1.3, 97, -60)], { origin: 'NE', lanes: [-1.5, 1.5], stops: [{ s: 340 + 1, sig: 'A' }], col: RED, rate: 0.06 }),
+    NW: route([curveX(340, -340, 3.5, 1.3, 97, -60)], { origin: 'NW', lanes: [-1.5, 1.5], stops: [{ s: 340 - 19, sig: 'A' }], col: WHITE, rate: 0.06 }),
+    BE: route([curveX(-340, 340, 101.5, 3.4, 183, 45)], { origin: 'BE', lanes: [-1.4, 1.4], stops: [{ s: 340 + 2, sig: 'B' }], col: RED, rate: 0.09 }),
+    BW: route([curveX(340, -340, 96.5, 3.4, 183, 45)], { origin: 'BW', lanes: [-1.4, 1.4], stops: [{ s: 340 - 18, sig: 'B' }], col: WHITE, rate: 0.09 }),
+    HE: route([line(-360, 0, 360, 0).map(q => [q[0], hwZ(q[0]) + 2.2])], { origin: 'HE', lanes: [-1.7, 1.7], stops: [], col: RED, rate: 0.18, y: hwY, fast: true }),
+    HW: route([line(360, 0, -360, 0).map(q => [q[0], hwZ(q[0]) - 2.2])], { origin: 'HW', lanes: [-1.7, 1.7], stops: [], col: WHITE, rate: 0.18, y: hwY, fast: true }),
+    FE: route([curveX(-420, 420, 190, 5.5, 233, -125)], { origin: 'FE', lanes: [0], stops: [], col: RED, rate: 0.08 }),
+    FW: route([curveX(420, -420, 184, 5.5, 233, -125)], { origin: 'FW', lanes: [0], stops: [], col: WHITE, rate: 0.08 }),
+  };
+  const R_LIST = Object.values(routes);
+  const ORIGINS = [...new Set(R_LIST.map(r => r.origin))];
+  // an elevated railway between the two avenues, and what lights the street besides the cars
+  const TRE = route([curveX(-420, 420, 76, 3, 160, 10)], { origin: 'TRE', lanes: [0], stops: [], col: WHITE, rate: 0, y: () => 9.5 });
+  const TRW = route([curveX(420, -420, 81, 3, 160, 10)], { origin: 'TRW', lanes: [0], stops: [], col: WHITE, rate: 0, y: () => 9.5 });
+  let trains = [], nextTrain = 5;
+  const NEON = [], FAR = [], FARCARS = [];
+
+  // signals on a Japanese night plan. With this evening's traffic Webster's optimal cycle is short (about 30 s), and the
+  // pedestrians crossing the avenue set the floor: one cycle of 60 s for both crossings, the avenue 30 s of green and the
+  // cross street 20 s, amber 3 s, all-red 2 s. The far crossing runs 6 s ahead, so a platoon released there along the cross
+  // street reaches the near one on green. Every visit opens at another moment of the cycle.
+  const CYCLE = 60, SIG0 = Math.random() * CYCLE;
+  function signal(name, t) {
+    const ph = (((t + SIG0 + (name === 'B' || name === 'D' ? 6 : 0)) % CYCLE) + CYCLE) % CYCLE;
+    if (name === 'A' || name === 'B') return ph < 30 ? 'g' : ph < 33 ? 'y' : 'r';
+    return ph >= 35 && ph < 55 ? 'g' : ph >= 55 && ph < 58 ? 'y' : 'r';
+  }
+
+  let cars = [], simT = 0, clock = 0, nextSpawn = {};
+  const waveW = {}, waveP = {}, LAMPS = [];
+  const cam = { x: -3, y: 20, z: -20, yaw: .08, pitch: .32, hy: .5 };
+  function buildCity() {
+    cars = []; simT = 0; trains = [];
+    // vertical neon signs on the corners: soft, even light along the tube; a few hesitate
+    NEON.length = 0;
+    const NEONC = [[1, .16, .62], [.25, .9, 1], [1, .62, .16], [.4, 1, .55], [.85, .3, 1], [1, .2, .25]];
+    [[-5, 52], [27, 66], [-9, 104], [30, 146]].forEach(([x, z]) => {
+      NEON.push({ x, z, y0: 4.5 + rr() * 3, segs: 2 + Math.floor(rr() * 2), segH: 1.4 + rr() * 1.1, col: NEONC[Math.floor(rr() * NEONC.length)], flick: rr() < .35, f: 6 + rr() * 9, ph: rr() * 100, bright: .26 + .2 * rr() });
+    });
+    // street lamps: not quite regular, a few dark, older warm ones in some blocks, every bulb a little different
+    LAMPS.length = 0;
+    const lampAt = (x, z) => { if (rr() < .12) return; const warm = Math.sin(x / 90 + z / 70) > .55; LAMPS.push([x + (rr() - .5) * 5, 6.5 + rr(), z + (rr() - .5) * 1.5, warm ? 1 : 0, .7 + .6 * rr()]); };
+    for (let x = -300; x <= 300; x += 22 + rr() * 10) lampAt(x, 39);
+    for (let x = -290; x <= 300; x += 24 + rr() * 12) lampAt(x, 106);
+    for (let z = 0; z <= 360; z += 18 + rr() * 10) lampAt(17.5, z);
+    // the city beyond: a grid of streets fading into the haze, with specks of traffic like signals in a circuit
+    FAR.length = 0; FARCARS.length = 0;
+    const river = (x, z) => Math.abs(z - (520 + 60 * Math.sin(x / 200))) < 48;
+    const park = (x, z) => ((x + 250) / 230) ** 2 + ((z - 400) / 120) ** 2 < 1;
+    const dens = (x, z) => river(x, z) || park(x, z) ? 0 : .08 + .42 * Math.max(0, Math.sin(x / 170 + z / 230) * Math.sin(z / 140 - x / 310) + .3);
+    for (let z = 240; z <= 900; z += 38 + rr() * 12) for (let x = -700; x <= 700; x += 12 + rr() * 8) if (rr() < dens(x, z) * .55) FAR.push([x + rr() * 6, 6 + rr() * 2, z + (rr() - .5) * 8, rr() < .7 ? 0 : 1, Math.exp(rr() * 1.4 - .7)]);
+    for (let k = 0; k < 60; k++) { const hz = rr() < .5; FARCARS.push({ hz, line: Math.floor(rr() * (hz ? 16 : 26)), p: hz ? rr() * 1400 - 700 : 240 + rr() * 660, v: (rr() < .5 ? -1 : 1) * (8 + rr() * 10), red: rr() < .5 }); }
+    ORIGINS.forEach(o => { nextSpawn[o] = rr() * 3; waveW[o] = 2 * Math.PI / (40 + 70 * rr()); waveP[o] = rr() * 6.28; });
+    for (let k = 0; k < 2400; k++) stepCity(.05, 1);   // two minutes of traffic before the page opens
+  }
+  function spawn(origin) {
+    const opts = R_LIST.filter(r => r.origin === origin);
+    const total = opts.reduce((a, r) => a + r.rate, 0);
+    let pick = rr() * total, r = opts[0];
+    for (const o of opts) { if ((pick -= o.rate) <= 0) { r = o; break; } }
+    const lane = r.lanes.length < 2 ? 0 : r.fast ? (rr() < .92 ? 0 : 1) : (rr() < .72 ? 0 : 1);   // most keep to one lane; the motorway's other lane is for overtaking
+    if (cars.some(c => c.r.origin === origin && c.lane === lane && c.s < 14)) return;
+    // what drives on a Tokyo street at night, and how its lights are laid out
+    const u = rr();
+    const kind = r.fast
+      ? (u < .1 ? 'truck' : u < .15 ? 'bus' : u < .24 ? 'moto' : 'car')
+      : (u < .05 ? 'bus' : u < .09 ? 'truck' : u < .21 ? 'moto' : u < .28 && r.lanes.length > 1 ? 'bike' : 'car');
+    // town roads are signed 40–60 km/h, the elevated expressway 60–80 km/h; heavy vehicles pull away slowly
+    //            v min, v range (m/s), lights, half spacing, height, length, max acceleration min, range (m/s²)
+    const spec = { car: [10, 5.5, 2, .68, .72, 4.5, 1.4, 1.2], bus: [8.5, 3, 2, 1.15, .95, 11, .8, .4], truck: [9, 4, 2, 1.15, 1, 9, .8, .4], moto: [11, 6, 1, 0, .95, 2.2, 2, 1], bike: [4, 2, 1, 0, 1, 1.8, .8, .4] }[kind];
+    const heavy = kind === 'bus' || kind === 'truck';
+    const edge = r.lanes.reduce((m, x) => Math.max(m, Math.abs(x)), 0) + 1.7;
+    cars.push({
+      r, s: 0, lane, lat: kind === 'bike' ? edge : r.lanes[lane], v: 0, acc: 0, kind,
+      vDes: r.fast ? (heavy ? 15 + 5 * rr() : 17 + 7 * rr()) : spec[0] + spec[1] * rr(),
+      lines: spec[2], half: spec[3] * (.88 + .24 * rr()), asym: (rr() - .5) * .22, hgt: spec[4] * (.85 + .3 * rr()), len: spec[5],
+      latOff: (rr() - .5) * .7, vw: 2 * Math.PI / (6 + 10 * rr()), vph: rr() * 6.28,
+      col: kind === 'car' && rr() < .06 ? AMBER : r.col,
+      inten: kind === 'bike' ? .3 + .15 * rr() : kind === 'moto' ? .75 + .3 * rr() : .85 + .4 * rr(),
+      a0: spec[6] + spec[7] * rr(), T: .9 + .8 * rr(), wait: null,
+      dims: rr() < .25, dimAfter: 2 + 2 * rr(), stopT: 0, lampK: 1,
+      hist: [], histT: 0, wob: .08 + .18 * rr(), ph1: rr() * 6.28, ph2: rr() * 6.28,
+    });
+    cars[cars.length - 1].v = cars[cars.length - 1].vDes * .9;
+  }
+  function stepCity(dt, boost) {
+    const h = dt * boost; simT += h; clock += dt;
+    for (const o of ORIGINS) {
+      nextSpawn[o] -= h;
+      if (nextSpawn[o] <= 0) {
+        spawn(o);
+        const rate = R_LIST.filter(r => r.origin === o).reduce((a, r) => a + r.rate, 0);
+        const wave = .35 + 1.3 * (.5 + .5 * Math.sin(simT * waveW[o] + waveP[o]));
+        nextSpawn[o] = -Math.log(1 - rr()) / (rate * wave);
+      }
+    }
+    for (const c of cars) {
+      if (c.s >= c.r.len - 1) c.done = true;
+      if (c.done) { while (c.hist.length && clock - c.hist[0].t > TEXP) c.hist.shift(); continue; }
+      // the car ahead in the same lane, or a red light, is an obstacle (Intelligent Driver Model)
+      let gap = 1e9, dv = 0, ahead = null;
+      for (const o of cars) {
+        if (o === c || o.done || o.r.origin !== c.r.origin || o.lane !== c.lane || o.s <= c.s) continue;
+        const g = o.s - c.s - o.len;
+        if (g < gap) { gap = g; dv = c.v - o.v; ahead = o; }
+      }
+      for (const st of c.r.stops) {
+        if (c.s > st.s) continue;
+        const sig = signal(st.sig, simT), d = st.s - c.s;
+        if (sig === 'r' || (sig === 'y' && d > c.v * c.v / 6)) { if (d - 1 < gap) { gap = d - 1; dv = c.v; } }
+      }
+      const a0 = c.a0, b = 3, s0 = 2.2, T = c.T;               // every driver has their own temper
+      const sStar = s0 + Math.max(0, c.v * T + c.v * dv / (2 * Math.sqrt(a0 * b)));
+      const vd = c.vDes * (1 + .08 * Math.sin(simT * c.vw + c.vph));
+      let a = a0 * (1 - Math.pow(c.v / vd, 4) - Math.pow(sStar / Math.max(gap, .1), 2));
+      // starting from rest takes a moment, different for everyone: the queue leaves as a wave
+      // reaction: about 1.4 s for the first in line, 0.8 s for each one behind (the queue leaves at ~2 s per car), now and then a phone
+      if (c.v < .3 && a > .2) { if (c.wait === null) c.wait = (ahead && gap < 12 ? .3 + -Math.log(1 - rr()) * .5 : .8 + -Math.log(1 - rr()) * .6) + (rr() < .05 ? 1.5 + rr() * 1.5 : 0); if (c.wait > 0) { c.wait -= h; a = 0; } }
+      else if (c.v > 1.5) c.wait = null;
+      c.acc = Math.max(-9, a);
+      // waiting at the red, a driver in four switches the headlights off after a few seconds (a habit born with taxis),
+      // and back on at the green, before moving; the tail lamps stay on
+      c.stopT = c.v < .1 ? c.stopT + h : 0;
+      const off = c.dims && c.col === WHITE && c.stopT > c.dimAfter && c.wait === null;
+      c.lampK += ((off ? .1 : 1) - c.lampK) * Math.min(1, h / .12);
+      c.v = Math.max(0, c.v + c.acc * h);
+      c.s += c.v * h;
+      // now and then a lane change on a free stretch
+      // lanes: on the motorway keep to the cruising lane and use the other only to overtake, then come back;
+      // in town change lane now and then, only where there is room (side by side happens mostly in queues)
+      if (c.r.lanes.length > 1 && c.kind !== 'bike') {
+        const other = 1 - c.lane;
+        const busy = (lane, ahead, behind) => cars.some(o => o !== c && !o.done && o.r.origin === c.r.origin && o.lane === lane && o.s > c.s - behind && o.s < c.s + ahead);
+        if (c.r.fast) {
+          if (c.lane === 0) { if (gap < 45 && dv > 1.5 && !busy(1, 20, 14)) c.lane = 1; }
+          else if (!busy(0, 24, 12)) c.lane = 0;
+        } else {
+          const lc = c.kind === 'moto' ? .25 : c.kind === 'car' ? .05 : .01;
+          if (c.v > 5 && rr() < lc * h && !busy(other, 12, 9)) c.lane = other;
+        }
+      }
+      const tgt = c.kind === 'bike' ? c.lat : c.r.lanes[c.lane];
+      c.lat += Math.max(-1.3 * h, Math.min(1.3 * h, tgt - c.lat));
+      // the exposure: remember where the car was
+      c.histT += dt;
+      if (c.histT > 1 / 40 || !c.hist.length) {
+        c.histT = 0;
+        const q = at(c.r, c.s);
+        const lat = c.lat + c.latOff + c.wob * Math.sin(c.s * .05 + c.ph1) + .07 * Math.sin(c.s * .17 + c.ph2);
+        c.hist.push({ x: q.x + q.nx * lat, y: q.y, z: q.z + q.nz * lat, nx: q.nx, nz: q.nz, t: clock });
+      }
+      while (c.hist.length > 2 && clock - c.hist[0].t > TEXP) c.hist.shift();
+    }
+    cars = cars.filter(c => !c.done || c.hist.length > 1);
+    nextTrain -= h;
+    if (nextTrain <= 0) { trains.push({ r: rr() < .5 ? TRE : TRW, s: 0, v: 14 + rr() * 6, len: 90 + rr() * 60 }); nextTrain = 28 + rr() * 30; }
+    for (const tr of trains) tr.s += tr.v * h;
+    trains = trains.filter(tr => tr.s - tr.len < tr.r.len + 40);
+    for (const fc of FARCARS) {
+      fc.p += fc.v * h;
+      if (fc.hz) { if (fc.p > 700) fc.p -= 1400; if (fc.p < -700) fc.p += 1400; } else { if (fc.p > 900) fc.p -= 660; if (fc.p < 240) fc.p += 660; }
+    }
+  }
+
+  // the camera's angles change once per frame: their sines are taken once, then every point is projected without allocating
+  let cyw = 1, syw = 0, cpt = 1, spt = 0;
+  function aimCamera() { cyw = Math.cos(cam.yaw); syw = Math.sin(cam.yaw); cpt = Math.cos(cam.pitch); spt = Math.sin(cam.pitch); }
+  const hyp = (x, y) => Math.sqrt(x * x + y * y);   // Math.hypot is several times slower in the hot loops
+  const Q = new Float64Array(3);                 // the last projected point: screen x, y and depth
+  function proj(x, y, z) {
+    const dx = x - cam.x, dy = y - cam.y, dz = z - cam.z;
+    const x1 = dx * cyw - dz * syw, z1 = dx * syw + dz * cyw;
+    const yc = dy * cpt + z1 * spt, zc = -dy * spt + z1 * cpt;
+    Q[0] = W / 2 + F * x1 / zc; Q[1] = H / 2 - F * yc / zc; Q[2] = zc;
+    return Q;
+  }
+  let F = 1;
+  const AIRC = [.42, .52, .85];
+  // scratch buffers for the ribbons: building a frame allocates nothing, so no garbage-collection pauses while scrolling
+  const MAXS = 512, scratch = () => new Float32Array(MAXS + 2);
+  const SX = scratch(), SY = scratch(), SZ = scratch(), SK = scratch();                     // the source points of a ribbon
+  const PX = scratch(), PY = scratch(), PZ = scratch(), PK = scratch(), AK = scratch();     // resampled, with the soft caps
+  const W0 = scratch(), WW = scratch(), HH = scratch(), NX = scratch(), NY = scratch();
+  const src = (i, x, y, z, k) => { proj(x, y, z); SX[i] = Q[0]; SY[i] = Q[1]; SZ[i] = Q[2]; SK[i] = k; };
+  const NEAR = 10;                               // nearer than this is below the frame: never drawn (no exploding segments)
+  const LAMP = [1, .78, .5], LED = [.78, .86, 1], FARWARM = [1, .74, .45], FARCOOL = [.78, .86, 1], TRAIN = [1, .9, .74], HEADLAMP = [1, .97, .9];
+  const SIGC = { g: [.3, 1, .6], y: [1, .7, .15], r: [1, .12, .1] };
+  const SIGNALS = [[2, 26, 'A'], [18, 40, 'A'], [3, 41, 'C'], [17, 25, 'C'], [2, 94, 'B'], [18, 105, 'B'], [3, 106, 'D'], [17, 93, 'D']];
+  function buildGeometry(t, boost) {
+    let n = 0, m = 0;
+    const put = (x, y, a, am, r, g, b) => { if (n >= MAXV) return; const o = n * RSTRIDE; ribData[o] = x; ribData[o + 1] = y; ribData[o + 2] = a; ribData[o + 3] = am; ribData[o + 4] = r; ribData[o + 5] = g; ribData[o + 6] = b; n++; };
+    // aerial perspective: the further the light, the bluer it gets
+    const airK = z => .55 * (1 - Math.exp(-z / 380));
+    const pt = (x, y, z, size, col, k, star, bok) => {
+      if (m >= MAXP || z < 1.5) return;
+      const o = m * VSTRIDE, a = airK(z);
+      ptData[o] = x; ptData[o + 1] = y; ptData[o + 2] = star ? -size : bok ? size + 1000 : size;
+      for (let j = 0; j < 3; j++) ptData[o + 3 + j] = (col[j] + (AIRC[j] - col[j]) * a) * k;
+      m++;
+    };
+    const fade = z => 1 / (1 + z / 60) * Math.exp(-z / 900);
+    const zf = 58 + 3 * Math.sin(t * .07), AP = 4.2;             // focus distance (m) and aperture (px)
+    const coc = z => AP * Math.abs(z - zf) / Math.max(z, 1);
+    const dimCity = .85 * (1 - .5 * heroIn * (1 - Math.min(1, Math.abs(v) / 300)));
+    const lightW = (z, wK) => Math.max(.55, LIGHT * wK * F / z);
+    // one vertex of a ribbon: point i, on side s (+1 or -1)
+    const vtx = (i, s, col) => {
+      const h = HH[i], am = h / WW[i], k = PK[i] * W0[i] / WW[i], a = AK[i];
+      put(PX[i] + s * NX[i] * h, PY[i] + s * NY[i] * h, s * am, am, (col[0] + (AIRC[0] - col[0]) * a) * k, (col[1] + (AIRC[1] - col[1]) * a) * k, (col[2] + (AIRC[2] - col[2]) * a) * k);
+    };
+    // soft cap at o: the end a pushed away from b by about the size of the light, fading to nothing (only where the direction is defined)
+    const cap = (o, a, b, wK) => {
+      const dx = PX[a] - PX[b], dy = PY[a] - PY[b], l = hyp(dx, dy), w = l < .5 ? 0 : lightW(PZ[a], wK) * 1.8 / l;
+      PX[o] = PX[a] + dx * w; PY[o] = PY[a] + dy * w; PZ[o] = PZ[a]; PK[o] = 0;
+    };
+    // a ribbon of light along the first n source points (SX, SY, SZ with intensity SK)
+    function strip(n, col, wK) {
+      // only the run in front of the camera, resampled about every half a light: bends are measured on the shape, not on the noise
+      let i0 = 0; while (i0 < n && SZ[i0] < NEAR) i0++;
+      let i1 = i0; while (i1 < n && SZ[i1] >= NEAR) i1++;
+      let L = 1;                                                           // index 0 is the first soft cap
+      for (let i = i0; i < i1 && L <= MAXS; i++) {
+        const step = Math.max(1.5, .6 * hyp(lightW(SZ[i], wK), coc(SZ[i]) * .45));
+        const d = L > 1 ? hyp(SX[i] - PX[L - 1], SY[i] - PY[L - 1]) : Infinity;
+        if (d < step && i < i1 - 1) continue;
+        if (i === i1 - 1 && L > 2 && d < step * .5) L--;                  // the head replaces a too-close point, so it stays exact
+        PX[L] = SX[i]; PY[L] = SY[i]; PZ[L] = SZ[i]; PK[L] = SK[i]; L++;
+      }
+      if (L < 3) return;
+      cap(0, 1, 2, wK); cap(L, L - 1, L - 2, wK);
+      const N = L + 1;
+      for (let i = 0; i < N; i++) {
+        AK[i] = airK(PZ[i]);
+        W0[i] = lightW(PZ[i], wK);
+        WW[i] = hyp(W0[i], coc(PZ[i]) * .45);                       // depth of field softens the light
+        const a = Math.max(0, i - 1), b = Math.min(N - 1, i + 1), tx = PX[b] - PX[a], ty = PY[b] - PY[a], l = hyp(tx, ty);
+        if (l > 1e-3) { NX[i] = -ty / l; NY[i] = tx / l; } else if (i) { NX[i] = NX[i - 1]; NY[i] = NY[i - 1]; } else { NX[i] = 0; NY[i] = 1; }
+        // the glow reaches five widths, but never more than the radius of the bend: the ribbon must not fold over itself
+        let h = Math.min(90, WW[i] * 5);
+        if (i > 0 && i < N - 1) {
+          const ax = PX[i] - PX[i - 1], ay = PY[i] - PY[i - 1], bx = PX[i + 1] - PX[i], by = PY[i + 1] - PY[i];
+          const la = hyp(ax, ay), lb = hyp(bx, by);
+          if (la > .01 && lb > .01) {
+            const th = Math.acos(Math.max(-1, Math.min(1, (ax * bx + ay * by) / (la * lb))));
+            if (th > .01) h = Math.min(h, .9 * Math.min(la, lb) / (2 * Math.sin(th / 2)));
+          }
+        }
+        HH[i] = Math.max(h, WW[i] * 2.6);                                    // never narrower than the core and its first glow
+      }
+      for (let i = 1; i < N - 1; i++) HH[i] = Math.min(HH[i], (HH[i - 1] + HH[i + 1]) * .5 + WW[i]);   // no sudden jumps in width
+      for (let i = 0; i < N - 1; i++) {
+        if (hyp(PX[i + 1] - PX[i], PY[i + 1] - PY[i]) < .05) continue;
+        vtx(i, 1, col); vtx(i, -1, col); vtx(i + 1, 1, col);
+        vtx(i + 1, 1, col); vtx(i, -1, col); vtx(i + 1, -1, col);
+      }
+    }
+    // a light and, on the wet asphalt, its reflection: a column right under it, stretched by the ripples
+    function lamp(x, y, z, ground, col, k, sizeK, star) {
+      proj(x, y, z);
+      const qx = Q[0], qy = Q[1], qz = Q[2];
+      if (qz < NEAR) return;
+      k *= fade(qz);
+      const size = Math.min(44, Math.max(star ? 5 : 1.6, sizeK * F / qz)), cc = coc(qz);
+      if (cc > 2.2) pt(qx, qy, qz, Math.min(46, Math.max(size * .5, cc * 2.2)), col, k * Math.min(1, Math.pow(2.6 / cc, 1.3)), false, true);
+      else pt(qx, qy, qz, size, col, k, star);
+      if (ground === null) return;
+      for (let r = 0; r <= 14; r++) src(r, x + Math.sin(t * .9 + r * .3 + x) * .08, 2 * ground - y - r * .32, z, k * .2 * Math.exp(-r / 5.5) * (.85 + .15 * Math.sin(t * 1.4 + r * .4 + z)));
+      strip(15, col, 1.8);
+    }
+    const end = f => Math.min(1, f / .08 + .05, (1 - f) / .03 + .35);
+
+    // the city beyond, layer upon layer
+    for (const f of FAR) {
+      proj(f[0], f[1], f[2]);
+      const qx = Q[0], qy = Q[1], qz = Q[2];
+      if (qz < 1.5 || qx < -20 || qx > W + 20 || qy < -20 || qy > H + 20) continue;
+      const cc = coc(qz), kf = .4 * f[4] * Math.exp(-qz / 1400) / (1 + qz / 400) * dimCity, cf = f[3] ? FARCOOL : FARWARM;
+      if (cc > 2.6 && f[4] > .9) pt(qx, qy, qz, Math.min(8, cc * 1.4), cf, kf * Math.min(1, Math.pow(2.6 / cc, 1.2)) * 1.3, false, true); else pt(qx, qy, qz, 1.6, cf, kf * .9, false);
+    }
+    for (const fc of FARCARS) {
+      if (fc.hz) proj(fc.p, 6.6, 240 + fc.line * 42); else proj(-700 + fc.line * 56, 6.6, fc.p);
+      if (Q[2] < 1.5) continue;
+      pt(Q[0], Q[1], Q[2], 2.1, fc.red ? RED : WHITE, .8 * Math.exp(-Q[2] / 1400) / (1 + Q[2] / 400) * dimCity, false);
+    }
+
+    // vehicles: the real history of their lights during the exposure
+    for (const c of cars) {
+      const H0 = c.hist, N = Math.min(H0.length, MAXS);
+      if (N < 1) continue;
+      const braking = c.acc < -1 && c.col === RED;
+      const glow = 1.7 * c.inten * c.lampK * (braking ? 1.8 : 1) / Math.sqrt(boost) * dimCity;
+      const hgt = c.hgt, qL = H0[N - 1];
+      // a pair of lamps is one trail where the lens cannot separate them; two lamps are never identical (age, dirt, aim)
+      let twin = false, wKm = 1;
+      if (c.lines === 2) {
+        proj(qL.x - qL.nx * c.half, qL.y + hgt, qL.z - qL.nz * c.half);
+        const ax = Q[0], ay = Q[1], z0 = Math.max(Q[2], NEAR);
+        proj(qL.x + qL.nx * c.half, qL.y + hgt, qL.z + qL.nz * c.half);
+        const sep = hyp(ax - Q[0], ay - Q[1]);
+        twin = sep >= 2.2 * hyp(lightW(z0, 1), coc(z0) * .45);
+        if (!twin) wKm = 1 + Math.min(1.2, sep / (2 * lightW(z0, 1)));
+      }
+      for (let j = 0; j < (twin ? 2 : 1); j++) {
+        const lat = twin ? (j ? c.half : -c.half) : 0, gain = j ? 1 + c.asym : 1 - c.asym;
+        let visMax = 0, visL = 0, faceL = 0;
+        for (let i = 0; i < N; i++) {
+          const q = H0[i];
+          proj(q.x + q.nx * lat, q.y + hgt, q.z + q.nz * lat); SX[i] = Q[0]; SY[i] = Q[1]; SZ[i] = Q[2];
+          // the lamp faces the camera (headlights coming, tail lights going) or turns away from it
+          const dx = cam.x - q.x, dy = cam.y - q.y, dz = cam.z - q.z, l3 = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1, l2 = hyp(dx, dz) || 1;
+          const d = Math.max(0, (q.nz * dx - q.nx * dz) / l3 * (c.col === RED ? -1 : 1)), face = .6 + 2.3 * d * d;
+          // seen from the side the far lamp of a pair is behind the body of the vehicle, more and more as the face turns away
+          const side = (q.nx * dx + q.nz * dz) / l2, u = Math.min(1, Math.max(0, (Math.abs(side) - .45) / .45)), far = 1 - u * u * (3 - 2 * u);
+          const vis = c.lines !== 2 ? 1 : !twin ? .85 * (1 + far) : lat * side >= 0 ? gain : gain * far;
+          // exposure: a slower light stays longer on each point of the sensor and draws a brighter trail
+          const a = H0[Math.max(0, i - 1)], b = H0[Math.min(N - 1, i + 1)], dt = b.t - a.t, sp = dt > 1e-4 ? hyp(b.x - a.x, b.z - a.z) / dt : 0;
+          const ex = Math.min(1.5, Math.max(.65, Math.sqrt(9 / Math.max(sp, 2))));
+          SK[i] = glow * vis * ex * fade(SZ[i]) * end(N > 1 ? i / (N - 1) : 1) * face;
+          if (vis > visMax) visMax = vis;
+          visL = vis; faceL = face;
+        }
+        // standing still during the exposure: the light piles up on one spot
+        const lx = SX[N - 1], ly = SY[N - 1], lz = SZ[N - 1];
+        let still = 0;
+        for (let i = 0; i < N; i++) if (hyp(SX[i] - lx, SY[i] - ly) < 1.2) still++;
+        if (!c.done && lz > NEAR && visL > .05) pt(lx, ly, lz, Math.min(14, Math.max(2, LIGHT * 6 * F / lz)), c.col, glow * visL * fade(lz) * faceL * .95 * Math.pow(still / N, 1.5), false);
+        if (visMax > .03) strip(N, c.col, twin ? 1 : wKm);
+      }
+    }
+
+    // the elevated railway: a lit train is one band of windows, stretched by the exposure
+    for (const tr of trains) {
+      const s1 = Math.min(tr.s, tr.r.len), s0 = Math.max(0, tr.s - tr.len - tr.v * TEXP * boost);
+      if (s1 <= s0) continue;
+      // carriages of 20 m: the windows stop between one and the next, but a moving train smears the gaps away during the exposure
+      const gapD = .88 * Math.exp(-tr.v * TEXP / 4), NP = Math.min(MAXS, Math.floor((s1 - s0) / 1.5) + 1);
+      for (let i = 0; i < NP; i++) {
+        const ss = s0 + i * 1.5, q = at(tr.r, ss), u = ((tr.s - ss) % 20 + 20) % 20;
+        proj(q.x, q.y + 1.3, q.z); SX[i] = Q[0]; SY[i] = Q[1]; SZ[i] = Q[2];
+        SK[i] = .32 * fade(Q[2]) * dimCity * (ss > tr.s - tr.len && u < 1.4 ? 1 - gapD : 1) * Math.min(1, i / 4, (NP - 1 - i) / 4 + .2);
+      }
+      strip(NP, TRAIN, 2.2);
+      const hq = at(tr.r, s1);
+      lamp(hq.x, hq.y + .8, hq.z, 0, HEADLAMP, 1.1 * dimCity, 2.4, true);
+    }
+
+    // neon on the corners, and its colour spilled on the wet asphalt
+    for (const ne of NEON) {
+      const fl = ne.flick && Math.sin(Math.floor(t * ne.f + ne.ph) * 12.9898) > .86 ? .25 : 1;   // a tube that hesitates
+      const len = ne.segs * (ne.segH + .5);
+      const kk = ne.bright * fl * dimCity * fade(proj(ne.x, ne.y0, ne.z)[2]) * 1.5;
+      for (let r = 0; r <= 24; r++) src(r, ne.x, ne.y0 + len * r / 24, ne.z, kk * (.9 + .1 * Math.sin(r * .5 + ne.ph)));
+      strip(25, ne.col, 2.2);
+      for (let r = 0; r <= 30; r++) src(r, ne.x + Math.sin(t * .9 + r * .25 + ne.ph) * .12, -ne.y0 - r * len * 1.3 / 30, ne.z, kk * .16 * Math.exp(-r / 11) * (.85 + .15 * Math.sin(t * 1.3 + r * .35 + ne.ph)));
+      strip(31, ne.col, 3.2);
+    }
+
+    // street lamps (LED, cool; some older ones warm) with their star and their reflection
+    for (const L of LAMPS) lamp(L[0], L[1], L[2], 0, L[3] ? LAMP : LED, .46 * L[4] * dimCity, 3.2, true);
+    for (let x = -300; x <= 300; x += 30) lamp(x, hwY(x) + 3, hwZ(x), null, LED, .35 * dimCity, 2.6, true);
+    // the traffic lights themselves
+    for (const [x, z, sg] of SIGNALS) lamp(x, 5.2, z, 0, SIGC[signal(sg, simT)], .95, 2.8, true);
+    gl.bindBuffer(gl.ARRAY_BUFFER, ribVAO.b); gl.bufferSubData(gl.ARRAY_BUFFER, 0, ribData, 0, n * RSTRIDE);
+    gl.bindBuffer(gl.ARRAY_BUFFER, ptVAO.b); gl.bufferSubData(gl.ARRAY_BUFFER, 0, ptData, 0, m * VSTRIDE);
+    ribCount = n; ptCount = m;
+  }
+
+  // ---------- layout: a wide, staggered masonry with entropy, like the traffic behind it. In colour order, every photograph
+  // drops onto a grid of 24 columns at the lowest free place, with some chance in the choice; sizes, gaps and depths vary,
+  // and every visit gets another arrangement. Company rules: a landscape has at most one portrait beside it and only rarely
+  // another landscape (then well staggered); portraits may stand two or three abreast. Depth gives every photograph its own
+  // speed across the screen, a parallax that never accumulates, with room enough that nothing ever overlaps. ----------
+  let W = 0, H = 0, items = [], fpx = 1, loopH = 1, y0 = 0;
+  const FOVY = 50 * Math.PI / 180, SPEED = .8, SEED = Math.random() * 1000;   // the photographs travel at 0.8 of the scroll
+  function layout() {
+    const narrow = W < 720, U = narrow ? W * .86 : Math.min(W * .92, H * 2.1);   // on a phone the camera's sway needs a margin
+    const G = narrow ? 12 : 24, cw = U / G, x0 = (W - U) / 2, gapH = cw * .7;
+    fpx = H / 2 / Math.tan(FOVY / 2);
+    const r = (i, k) => rnd(i + SEED, k);
+    // colour order, but a portrait or two a few places ahead sometimes step forward to join the portrait before them
+    const seq = [...order], list = [];
+    while (seq.length) {
+      const p = seq.shift(); list.push(p);
+      if (p.ar < 1) for (let n = 0; n < 2; n++) { const k = seq.findIndex(q => q.ar < 1); if (k >= 0 && k <= 2 && r(p.i, 21 + n) < .6) list.push(seq.splice(k, 1)[0]); else break; }
+    }
+    const over = (a, b) => a.top < b.bottom && b.top < a.bottom;
+    const share = (a, b) => (Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top)) / Math.min(a.bottom - a.top, b.bottom - b.top);
+    items = [];
+    for (const p of list) {
+      const land = p.ar >= 1;
+      const units = narrow ? (land ? 11 + Math.floor(r(p.i, 4) * 2) : 5 + Math.floor(r(p.i, 5) * 2)) : land ? 10 + Math.floor(r(p.i, 4) * 5) : 5 + Math.floor(r(p.i, 5) * 3);
+      const w = units * cw - gapH, h = w / p.ar;
+      const z = land ? 7.5 + 1.5 * r(p.i, 6) : 8.3 + 2.7 * r(p.i, 7), sp = 1 + (9 - z) * (narrow ? .02 : .04);
+      const gapV = H * (narrow ? .06 + .1 * r(p.i, 8) : .05 + .2 * r(p.i, 8));
+      let best = null;
+      for (let a = 0; a + units <= G; a++) {
+        // the lowest free place over these columns, with room for the parallax against the photograph above
+        let y = 0;
+        for (const o of items) if (o.a < a + units && a < o.a + o.units) y = Math.max(y, o.bottom + gapV + Math.abs(sp - o.sp) * .9 * H);
+        // company rules for whoever stands beside, even only partly; and beside someone never at the same height: staggered
+        const ll = r(p.i, 13) < .3, lp = r(p.i, 11) < .55, stag = .15 + .3 * r(p.i, 14);
+        for (let guard = 0; guard < 40; guard++) {
+          const me = { top: y, bottom: y + h }, side = items.filter(o => over(me, o)), lands = side.filter(o => o.land);
+          let ok;
+          if (land) ok = !side.length || (side.length === 1 && (!lands.length || (ll && share(me, lands[0]) <= .5)));
+          else ok = side.length <= 2 && (!lands.length || (side.length === 1 && lp && !items.some(o => !o.land && over(o, lands[0]))));
+          if (ok && side.length) { const o = side[side.length - 1], t = o.top + (o.bottom - o.top) * (land && lands.length ? .52 : stag); if (y < t) { y = t; continue; } }
+          if (ok) break;
+          // a landscape may still stand beside another one, half a height lower
+          if (land && ll && side.length === 1 && lands.length === 1) { const t = lands[0].top + (lands[0].bottom - lands[0].top) * .52; if (y < t) { y = t; continue; } }
+          y = Math.max(...side.map(o => o.bottom)) + gapV;
+        }
+        const score = y + H * .5 * rnd(p.i * 7 + a + SEED, 12);              // some chance in the choice, not always the lowest place
+        if (!best || score < best.score) best = { a, y, score };
+      }
+      items.push({ p, a: best.a, units, land, top: best.y, bottom: best.y + h, xs: x0 + (best.a + units / 2) * cw, ys: best.y + h / 2, w, h, z, sp, dim: 1 - (z - 7.5) * .07, tr: .35 + .65 * rnd(p.i, 43) });
+    }
+    // the protagonists: landscapes with nobody beside them
+    for (const it of items) it.hero = it.land && !items.some(o => o !== it && over(o, it));
+    // infinite: the sequence repeats after a longer pause (the title's place at the start), always longer than the screen
+    // plus the tallest photograph, so none shows twice at once
+    const end = Math.max(...items.map(o => o.bottom)), hmax = Math.max(...items.map(o => o.h));
+    y0 = -(hmax / 2 + H * .3 + 40);
+    loopH = Math.max(end + H, H - 2 * y0 + 40);                              // a whole screen of city between one round and the next
+    items.sort((a, b) => b.z - a.z);                                           // far first
+  }
+  // perspective and view matrices (column-major)
+  function persp(a, n, f) { const t = 1 / Math.tan(FOVY / 2); return [t / a, 0, 0, 0, 0, t, 0, 0, 0, 0, (f + n) / (n - f), -1, 0, 0, 2 * f * n / (n - f), 0]; }
+  function mul(a, b) { const o = new Float32Array(16); for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) { let v = 0; for (let k = 0; k < 4; k++) v += a[k * 4 + r] * b[c * 4 + k]; o[c * 4 + r] = v; } return o; }
+  function view(cx, cy, pitch, yaw) {
+    const cp = Math.cos(pitch), sp = Math.sin(pitch), cw = Math.cos(yaw), sw = Math.sin(yaw);
+    const Rx = [1, 0, 0, 0, 0, cp, sp, 0, 0, -sp, cp, 0, 0, 0, 0, 1];
+    const Ry = [cw, 0, -sw, 0, 0, 1, 0, 0, sw, 0, cw, 0, 0, 0, 0, 1];
+    const T = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -cx, -cy, 0, 1];
+    return mul(Rx, mul(Ry, T));
+  }
+  function resize() {
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+    layout();
+    makeFB(canvas.width, canvas.height);
+    F = Math.max(W * .6, H * .95);
+    if (!cars.length) buildCity();
+  }
+
+  // ---------- motion: one velocity with momentum. Scroll pushes, friction brings it back to a slow cruise in the direction of travel ----------
+  const V0 = reduce ? 0 : 14;      // cruise, px per second
+  const VMAX = 1300, TAU = .9, PUSH = .12;
+  let v = V0, pending = 0, lastDir = 1, pos = 0, cruiseK = 1, heroIn = 0;
+  const tint = [.5, .2, .28];
+  const push = d => { pending += d; };
+  addEventListener('wheel', e => { if (lost) return; e.preventDefault(); push(e.deltaY * (e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? H : 1) * .8); }, { passive: false });
+  let ty = null;
+  addEventListener('touchstart', e => { ty = e.touches[0].clientY; }, { passive: true });
+  addEventListener('touchmove', e => { if (ty === null || lost) return; e.preventDefault(); const y = e.touches[0].clientY; push((ty - y) * 5); ty = y; }, { passive: false });
+  addEventListener('touchend', () => { ty = null; });
+  addEventListener('keydown', e => {
+    const m = { ArrowDown: 260, ArrowUp: -260, PageDown: 800, PageUp: -800, ' ': 800 }[e.key];
+    if (m === undefined || lost) return; e.preventDefault(); push(m);
+  });
+  function stepMotion(dt) {
+    const take = pending * (1 - Math.exp(-dt / PUSH));   // a push is a force over a short time, not a jump
+    pending -= take; v += take;
+    const dir = Math.abs(v) > 1 ? Math.sign(v) : lastDir; lastDir = dir;
+    const cruise = V0 * dir * cruiseK;
+    v = cruise + (v - cruise) * Math.exp(-dt / TAU);   // friction
+    v = Math.max(-VMAX, Math.min(VMAX, v));
+    pos += v * dt;
+  }
+
+  // ---------- frame loop ----------
+  const intro = document.getElementById('intro');
+  let prevT = performance.now(), camOff = 0, camVel = 0, tilt = 0, tiltVel = 0, simAcc = 0;
+  const STEP = 1 / 60;
+  const t0 = prevT;
+
+  function draw(now) {
+    if (lost) return;
+    const dt = Math.min(.05, (now - prevT) / 1000); prevT = now;
+    const t = (now - t0) / 1000;
+    stepMotion(dt);
+    const vel = v;
+    const boost = reduce ? .3 : 1;
+    // standing at the corner: the camera breathes, and leans with the scroll on a spring (late, with a little overshoot)
+    camVel += (0 - camOff) * 9 * dt - camVel * 3.2 * dt;
+    camOff += camVel * dt;
+    cam.x = -3 + .8 * Math.sin(t * .23) + camOff;
+    cam.y = 20 + .3 * Math.sin(t * .31);
+    cam.yaw = .08 + .012 * Math.sin(t * .17) + camOff * .004;
+    cam.pitch = .32 + .006 * Math.sin(t * .27);
+    cam.hy = .5 + F * Math.tan(cam.pitch) / H;
+    aimCamera();
+    // the city runs on a fixed step of 1/60 s whatever the refresh rate: the same traffic at 30, 60 or 120 fps
+    simAcc += dt;
+    while (simAcc >= STEP) { stepCity(STEP, boost); simAcc -= STEP; }
+    buildGeometry(t, boost);
+    // the title rises with the page and leans into the speed
+    intro.style.transform = `translate3d(0, ${(-pos).toFixed(1)}px, 0) skewX(${Math.max(-12, Math.min(12, -vel * .006)).toFixed(2)}deg)`;
+    for (const p of photos) if (p.ready) p.fade = Math.min(1, p.fade + dt * 1.6);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, bgFB.fb);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
+    if (ribCount) {
+      gl.blendEquation(gl.MAX);
+      gl.bindVertexArray(ribVAO.a); gl.useProgram(P.rib.p);
+      gl.uniform2f(P.rib.u.res, W, H);
+      gl.drawArrays(gl.TRIANGLES, 0, ribCount);
+      gl.blendEquation(gl.FUNC_ADD);
+    }
+    gl.bindVertexArray(vao);
+    gl.useProgram(P.haze.p);
+    gl.uniform1f(P.haze.u.hy, cam.hy); gl.uniform3fv(P.haze.u.tint, tint);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    if (ptCount) {
+      gl.bindVertexArray(ptVAO.a); gl.useProgram(P.pt.p);
+      gl.uniform2f(P.pt.u.res, W, H); gl.uniform1f(P.pt.u.dpr, DPR);
+      gl.drawArrays(gl.POINTS, 0, ptCount);
+    }
+    gl.bindVertexArray(vao);
+    // develop: filmic curve, vignette, dither
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.disable(gl.BLEND);
+    gl.useProgram(P.comp.p);
+    gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, bgFB.tex);
+    gl.uniform1i(P.comp.u.img, 1); gl.uniform2f(P.comp.u.res, canvas.width, canvas.height); gl.uniform1f(P.comp.u.t, t);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    gl.activeTexture(gl.TEXTURE0);
+
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.activeTexture(gl.TEXTURE0);
+    // the camera in front of the facades: it rides the scroll, breathes, and tilts on a spring in the direction of travel
+    tiltVel += ((reduce ? 0 : -vel * .00004) - tilt) * 7 * dt - tiltVel * 2.6 * dt;
+    tilt += tiltVel * dt;
+    const VP = mul(persp(W / H, .5, 200), view(.14 * Math.min(1, W / 1200) * Math.sin(t * .11), 0, tilt + .01 * Math.sin(t * .13), Math.min(1, W / 1200) * (.02 * Math.sin(t * .071) + .01 * Math.sin(t * .19))));
+    for (const P2 of [P.trail, P.photo]) { gl.useProgram(P2.p); gl.uniformMatrix4fv(P2.u.vp, false, VP); gl.uniform1i(P2.u.tex, 0); }
+    let heroDist = 1e9, heroHue = null;
+    const cityOnly = location.hash === '#city';
+    intro.hidden = cityOnly;
+    const scroll = pos * SPEED;
+    for (const it of cityOnly ? [] : items) {
+      if (!it.p.ready) continue;
+      let y = ((it.ys + H * .8 - scroll - y0) % loopH + loopH) % loopH + y0;     // the first row waits under the title
+      y = H / 2 + (y - H / 2) * it.sp;                                           // depth: near rows faster, far rows slower
+      if (y + it.h / 2 < -60 || y - it.h / 2 > H + 60) continue;
+      const k = it.z / fpx, wx = (it.xs - W / 2) * k, wy = (H / 2 - y) * k, ww = it.w * k, wh = it.h * k;
+      const vs = vel * SPEED * it.sp;                                            // px/s on screen, positive = moving up
+      if (it.hero) { const d = Math.abs(y - H / 2); if (d < heroDist) { heroDist = d; heroHue = it.p.hue; } }
+      gl.bindTexture(gl.TEXTURE_2D, it.p.tex);
+      if (!reduce) {
+        const lpx = Math.min(170, 3 + Math.abs(vs) * .11) * it.tr;
+        const inten = (.025 + .08 * Math.min(1, Math.abs(vs) / 600)) * it.tr * it.p.fade;   // barely there
+        if (lpx > 1.5) {
+          const below = vs > 0, lw = lpx * k;
+          gl.useProgram(P.trail.p);
+          gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+          gl.uniform1f(P.trail.u.below, below ? 1 : 0);
+          gl.uniform1f(P.trail.u.inten, inten);
+          gl.uniform1f(P.trail.u.dim, it.dim);
+          gl.uniform3f(P.trail.u.c, wx, below ? wy - wh / 2 - lw / 2 : wy + wh / 2 + lw / 2, -it.z);
+          gl.uniform2f(P.trail.u.sz, ww, lw);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        }
+      }
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.useProgram(P.photo.p);
+      gl.uniform1f(P.photo.u.alpha, it.p.fade);
+      gl.uniform1f(P.photo.u.dim, it.dim);
+      gl.uniform3f(P.photo.u.c, wx, wy, -it.z);
+      gl.uniform2f(P.photo.u.sz, ww, wh);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+    gl.disable(gl.BLEND);
+    // how centred is the protagonist: the drift breathes in, and the city dims a little around it
+    const centred = 1 - Math.min(1, heroDist / (H * .22));
+    heroIn += (centred * centred * (3 - 2 * centred) - heroIn) * (1 - Math.exp(-dt / .6));
+    cruiseK = 1 - .7 * heroIn;
+    if (heroHue !== null) {
+      const h = heroHue / 60, x = 1 - Math.abs(h % 2 - 1), rgb = h < 1 ? [1, x, 0] : h < 2 ? [x, 1, 0] : h < 3 ? [0, 1, x] : h < 4 ? [0, x, 1] : h < 5 ? [x, 0, 1] : [1, 0, x];
+      for (let k = 0; k < 3; k++) tint[k] += (rgb[k] * .7 + .12 - tint[k]) * (1 - Math.exp(-dt / 1.8));
+    }
+    requestAnimationFrame(draw);
+  }
+
+  addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(draw);
+})();
+</script>

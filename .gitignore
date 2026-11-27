@@ -57,6 +57,8 @@ certificates/
 # Brainstorming images (photo archive stays out of git)
 docs/discovery/**/assets/
 docs/discovery/**/img/
+# Prototype test runs: headless Chrome profile, served copies, one-off patches (rebuilt by _tools/measure.sh)
+docs/discovery/**/.work/
 
 # Originali foto, cataloghi Lightroom e chiavi sciolte: preventivo, non devono mai finire in git
 # (in git entrano solo le derivate ottimizzate)
